@@ -2,6 +2,23 @@
 
 Bellow is a step by step guide to configure mycroft in catalan
 
+- [mycroft.conf](#mycroftconf)
+  * [Lang](#lang)
+    + [Lang Config](#lang-config)
+  * [STT - Speech to Text](#stt---speech-to-text)
+    + [List of core engines that support catalan](#list-of-core-engines-that-support-catalan)
+    + [List of plugins that support catalan](#list-of-plugins-that-support-catalan)
+    + [STT Config](#stt-config)
+  * [TTS - Text to Speech](#tts---text-to-speech)
+    + [List of core engines that support catalan](#list-of-core-engines-that-support-catalan-1)
+    + [List of plugins that support catalan](#list-of-plugins-that-support-catalan-1)
+    + [TTS Config](#tts-config)
+      - [Installing festival](#installing-festival)
+  * [Final config](#final-config)
+- [Installing plugins](#installing-plugins)
+  * [Manual install](#manual-install)
+  * [Mycroft-pip](#mycroft-pip)
+
 # mycroft.conf
 
 You want to edit the user config, this is under ```~/.mycroft/mycroft.conf```
@@ -40,34 +57,22 @@ SPECIAL NOTES:
 
 The best way to workaround this is using plugins that support languages correctly
 
-### Installing plugins
+### List of core engines that support catalan 
 
-To install a plugin you can use pip, this needs to be inside the mycroft venv!
+- mycroft - only works if global lang is ```ca-es```, but this might stop working because its accidental, read [mycroft chat](https://chat.mycroft.ai/community/pl/j3bafyzjkpd3ifioihhwe84e6h) for details
+- google cloud - best accuracy, not free, allows [overriding global language](https://github.com/MycroftAI/mycroft-core/blob/dev/mycroft/stt/__init__.py#L109)
+- google - to be used you need to add a api key, but keys are no longer issued, see details in [google chromium plugin](https://github.com/JarbasLingua/jarbas-stt-plugin-chromium), this is effectively useless
 
-You can do this in several ways
+### List of plugins that support catalan
 
-#### Manual install
+- [google chromium](https://github.com/JarbasLingua/jarbas-stt-plugin-chromium)
+- [vosk](https://github.com/JarbasLingua/jarbas-stt-plugin-vosk)
+- [pocketsphinx](https://github.com/JarbasLingua/jarbas-stt-plugin-pocketsphinx)
 
-- manually activate the .venv, ```source mycroft-core/.venv/bin/activate```
-- use the mycroft script alias (might not be available) ```mycroft-venv-activate```
-- run the script explicitly ```mycroft-core/venv-activate.sh```
-
-then run the install command
-```
-pip install jarbas-stt-plugin-chromium
-```
-
-#### Mycroft-pip
-
-mycroft provides a pip wrapper to do the above for you, this might be or not available in your platform
-
-- use the mycroft alias (might not be available) ```mycroft-pip install jarbas-stt-plugin-chromium```
-- run the script explicitly ```mycroft-core/bin/mycroft-pip install jarbas-stt-plugin-chromium```
-- in a mark1 you will need to use sudo ```sudo mycroft-pip install jarbas-stt-plugin-chromium```
 
 ### STT Config
 
-Let's configure the plugin and override the language code
+Let's configure the [google chromium plugin](https://github.com/JarbasLingua/jarbas-stt-plugin-chromium) and override the language code
 
 ```json
 {
@@ -80,18 +85,6 @@ Let's configure the plugin and override the language code
   }
 }
 ```
-
-### List of plugins that support catalan
-
-- [google chromium](https://github.com/JarbasLingua/jarbas-stt-plugin-chromium)
-- [vosk](https://github.com/JarbasLingua/jarbas-stt-plugin-vosk)
-- [pocketsphinx](https://github.com/JarbasLingua/jarbas-stt-plugin-pocketsphinx)
-
-### List of core engines that support catalan 
-
-- mycroft - only works if global lang is ```ca-es```, but this might stop working because its accidental, read [mycroft chat](https://chat.mycroft.ai/community/pl/j3bafyzjkpd3ifioihhwe84e6h) for details
-- google cloud - best accuracy, not free, allows [overriding global language](https://github.com/MycroftAI/mycroft-core/blob/dev/mycroft/stt/__init__.py#L109)
-- google - to be used you need to add a api key, but keys are no longer issued, see details in [google chromium plugin](https://github.com/JarbasLingua/jarbas-stt-plugin-chromium), this is effectively useless
 
 ## TTS - Text to Speech
 
@@ -113,7 +106,12 @@ Installing plugins was described in detail in the STT section
 - [voicerss](https://github.com/JarbasLingua/jarbas-tts-plugin-voicerss) - requires api key (free)
 - [responsive voice](https://github.com/JarbasLingua/jarbas-tts-plugin-responsivevoice) - uses espeak for catalan
 
-### Installing festival
+### TTS Config
+
+Let's configure mycroft to use festival
+
+
+#### Installing festival
 
 Festival is supported by mycroft-core, but you need to install it manually
 
@@ -121,9 +119,6 @@ Festival is supported by mycroft-core, but you need to install it manually
 sudo apt-get -y install festival festvox-ca-ona-hts lame
 ```
 
-### TTS Config
-
-Let's configure mycroft to use festival
 
 ```json
 {
@@ -157,3 +152,28 @@ Let's configure mycroft to use festival
 
 }
 ```
+# Installing plugins
+
+To install a plugin you can use pip, this needs to be inside the mycroft venv!
+
+You can do this in several ways
+
+## Manual install
+
+- manually activate the .venv, ```source mycroft-core/.venv/bin/activate```
+- use the mycroft script alias (might not be available) ```mycroft-venv-activate```
+- run the script explicitly ```mycroft-core/venv-activate.sh```
+
+then run the install command
+```
+pip install jarbas-stt-plugin-chromium
+```
+
+## Mycroft-pip
+
+mycroft provides a pip wrapper to do the above for you, this might be or not available in your platform
+
+- use the mycroft alias (might not be available) ```mycroft-pip install jarbas-stt-plugin-chromium```
+- run the script explicitly ```mycroft-core/bin/mycroft-pip install jarbas-stt-plugin-chromium```
+- in a mark1 you will need to use sudo ```sudo mycroft-pip install jarbas-stt-plugin-chromium```
+
