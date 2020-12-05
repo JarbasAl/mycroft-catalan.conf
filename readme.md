@@ -285,11 +285,9 @@ TODO alternative skill
 
 ### Wikipedia
 
-like in the jokes skill, the official skill is not coded in a way that works with other languages, even if resource files have been translated
+there have been reports in the chat that the official skill was not working properly for catalan, i have not tested this, however i have had probl eveems with the underlying package used by it even in english
 
-it should be blacklisted to avoid conflicts
-
-TODO alternative skill
+You can use my alternative skill, [wikipedia-for-humans skill](https://github.com/JarbasSkills/skill-wikipedia-for-humans), using the [wikipedia_for_humans](https://github.com/HelloChatterbox/wikipedia_for_humans) package from [chatterbox](https://hellochatterbox.com), it will blacklist the default skill automatically and already supports catalan
 
 
 ### blacklist official skills
