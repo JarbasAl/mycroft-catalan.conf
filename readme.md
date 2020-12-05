@@ -354,8 +354,7 @@ class MyAlternativeSkill(MycroftSkill):
 
     def blacklist_default_skill(self):
         # load the current list of already blacklisted skills
-        core_conf = Configuration.load_config_stack()
-        blacklist = core_conf["skills"]["blacklisted_skills"]
+        blacklist = self.config_core["skills"]["blacklisted_skills"]
         
         # check the folder name (skill_id) of the skill you want to replace
         skill_id = "mycroft-skill-to-replace.mycroftai"
@@ -369,6 +368,8 @@ class MyAlternativeSkill(MycroftSkill):
             conf = LocalConf(USER_CONFIG)
             if "skills" not in conf:
                 conf["skills"] = {}
+
+            # update the blacklist field
             conf["skills"]["blacklisted_skills"] = blacklist
             
             # save the user config file
