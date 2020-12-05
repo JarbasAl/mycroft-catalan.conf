@@ -98,8 +98,7 @@ configure the [google chromium plugin](https://github.com/JarbasLingua/jarbas-st
 
 ```json
 {
-  "lang": "ca-es",
-   "stt": {
+  "stt": {
     "module": "chromium_stt_plug",
     "chromium_stt_plug": {
         "lang": "ca-ES"
