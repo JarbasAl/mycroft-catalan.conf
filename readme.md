@@ -87,9 +87,11 @@ Let's configure the plugin and override the language code
 - [vosk](https://github.com/JarbasLingua/jarbas-stt-plugin-vosk)
 - [pocketsphinx](https://github.com/JarbasLingua/jarbas-stt-plugin-pocketsphinx)
 
-### List of core engines that allow overriding language
+### List of core engines that support catalan 
 
-- [google cloud](https://github.com/MycroftAI/mycroft-core/blob/dev/mycroft/stt/__init__.py#L109)
+- mycroft - only works if global lang is ```ca-es```
+- [google cloud](https://github.com/MycroftAI/mycroft-core/blob/dev/mycroft/stt/__init__.py#L109) - allows overriding global language
+- google - to be used you need to add a api key, but keys are no longer issued, see details in [google chromium plugin](https://github.com/JarbasLingua/jarbas-stt-plugin-chromium), this is effectively useless
 
 ## TTS - Text to Speech
 
@@ -97,10 +99,10 @@ once more we need to select an engine that supports catalan, by default mycroft 
 
 ### List of core engines that support catalan
 
-- espeak
-- gtts
-- google cloud
-- festival
+- espeak - needs to be manually installed
+- festival - needs to be manually installed
+- gtts - can be set from web interface, breaks often (uses google translate undocumented web api)
+- google cloud - best accuracy, not free
 
 ### List of plugins that support catalan
 
