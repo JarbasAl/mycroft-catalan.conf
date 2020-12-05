@@ -18,7 +18,7 @@ SPECIAL NOTES:
 - any skill with a single file not translated will not load, all files must be translated
 - the language code must match exactly! I submitted a [PR to improve this](https://github.com/MycroftAI/mycroft-core/pull/1335) back in 2017, but it was completely ignored
 - this must match the [lang code for mycroft-core resource files](https://github.com/MycroftAI/mycroft-core/tree/dev/mycroft/res/text), in our case ```ca-es```
-- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills automatically will not work
+- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work
 
 ### Lang Config
 
@@ -49,7 +49,7 @@ You can do this in several ways
 #### Manual install
 
 - manually activate the .venv, ```source mycroft-core/.venv/bin/activate```
-- use the mycroft script alias (might not be available) ```mycroft-venv-activate ```
+- use the mycroft script alias (might not be available) ```mycroft-venv-activate```
 - run the script explicitly ```mycroft-core/venv-activate.sh```
 
 then run the install command
@@ -81,9 +81,11 @@ Let's configure the plugin and override the language code
 }
 ```
 
-### List of plugins that allow overriding language
+### List of plugins that support catalan
 
 - [google chromium](https://github.com/JarbasLingua/jarbas-stt-plugin-chromium)
+- [vosk](https://github.com/JarbasLingua/jarbas-stt-plugin-vosk)
+- [pocketsphinx](https://github.com/JarbasLingua/jarbas-stt-plugin-pocketsphinx)
 
 ### List of core engines that allow overriding language
 
@@ -104,9 +106,10 @@ once more we need to select an engine that supports catalan, by default mycroft 
 
 Installing plugins was described in detail in the STT section
 
-- [catotron](https://github.com/JarbasLingua/jarbas-tts-plugin-catotron)
-- [softcatala](https://github.com/JarbasLingua/jarbas-tts-plugin-softcatala)
-- [voicerss]()
+- [catotron](https://github.com/JarbasLingua/jarbas-tts-plugin-catotron) - best quality, but slow
+- [softcatala](https://github.com/JarbasLingua/jarbas-tts-plugin-softcatala) - same as festival, but running in a server
+- [voicerss](https://github.com/JarbasLingua/jarbas-tts-plugin-voicerss) - requires api key (free)
+- [responsive voice](https://github.com/JarbasLingua/jarbas-tts-plugin-responsivevoice) - uses espeak for catalan
 
 ### Installing festival
 
