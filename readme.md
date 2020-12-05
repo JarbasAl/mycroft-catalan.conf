@@ -63,7 +63,6 @@ We need to configure an engine that supports Catalan, google chrome STT supports
 SPECIAL NOTES:
 - mycroft backend should just work with most languages
 - chromium STT expects language code `ca-es`, it doesn't work if you use `ca` language code
-- for catalan we get a conflict because of lang code used in skills is ```ca```
 - most STT engines [do not allow overriding the language code](https://github.com/MycroftAI/mycroft-core/blob/dev/mycroft/stt/__init__.py#L33) unless implemented manually
 
 The best way to workaround this is using plugins that support languages correctly
@@ -244,14 +243,39 @@ some skills can not be easily translated and need a pull request to handle this 
 - they use a web api that returns english results
 - they need some language specific resource not accounted for by the original author
 
+A possible work around is using translation at runtime, see [wolfram alpha skill](https://github.com/MycroftAI/fallback-wolfram-alpha/blob/20.08/__init__.py#L188) which does this
+
+
 ## Replacing skills
 
 ### News skill
+
 To support catalan we need to find a news provider for atalonia
 
 [this Pull Request](https://github.com/MycroftAI/skill-npr-news/pull/102) has been blocked due to a backend error
 
 You can install [skill-news](https://github.com/JarbasLingua/skill-news) and blacklist the official skill
+
+#### Configuring audio backend
+
+By default mycroft uses a simple audio backend that has issues with http streams, we need to make mycroft use vlc instead, this will also allow many other skills to also work
+
+```bash
+sudo apt-get install vlc
+```
+
+edit your .conf and add the following
+
+```
+  "Audio": {
+    "backends": {
+      "vlc": {
+        "active": true
+      }
+    },
+    "default-backend": "vlc"
+  }
+```
 
 ### Jokes
 
