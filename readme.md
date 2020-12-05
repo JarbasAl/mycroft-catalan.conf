@@ -345,7 +345,7 @@ If you are writing a skill that explicitly replaces an official skill you can do
 
 ```python
 from mycroft.messagebus.message import Message
-from mycroft.configuration import LocalConf, USER_CONFIG, Configuration
+from mycroft.configuration import LocalConf, USER_CONFIG
 
 
 class MyAlternativeSkill(MycroftSkill):
