@@ -9,6 +9,7 @@ Bellow is a step by step guide to configure mycroft in catalan
     + [List of core engines that support catalan](#list-of-core-engines-that-support-catalan)
     + [List of plugins that support catalan](#list-of-plugins-that-support-catalan)
     + [STT Config](#stt-config)
+      - [Installing jarbas-stt-plugin-chromium](#installing-jarbas-stt-plugin-chromium)
   * [TTS - Text to Speech](#tts---text-to-speech)
     + [List of core engines that support catalan](#list-of-core-engines-that-support-catalan-1)
     + [List of plugins that support catalan](#list-of-plugins-that-support-catalan-1)
@@ -18,6 +19,17 @@ Bellow is a step by step guide to configure mycroft in catalan
 - [Installing plugins](#installing-plugins)
   * [Manual install](#manual-install)
   * [Mycroft-pip](#mycroft-pip)
+- [Translating Skills](#translating-skills)
+  * [translate.mycroft.ai](#translatemycroftai)
+  * [Exporting Pootle Manually](#exporting-pootle-manually)
+  * [Manual translation](#manual-translation)
+  * [Corner cases](#corner-cases)
+  * [Replacing skills](#replacing-skills)
+    + [News skill](#news-skill)
+    + [Jokes](#jokes)
+    + [Wikipedia](#wikipedia)
+    + [blacklist official skills](#blacklist-official-skills)
+
 
 # mycroft.conf
 
@@ -43,22 +55,6 @@ SPECIAL NOTES:
 {
   "lang": "ca-es"
 }
-```
-## Fixing translations of skills
-
-As pointed above, skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work because they use ```ca``` locale. But, you can use a custom script to export strings from Pootle and put them with ```ca-es``` locale.
-
-Just:
-- clone [mycroft-update-translations](https://github.com/jmontane/mycroft-update-translations) repository in a working dir
-```
-git clone https://github.com/jmontane/mycroft-update-translations
-```
-- if needed, edit mycroft-update-translations.py and change settings. By default it translates skills in ```/opt/mycroft/skills/```
-
-and then run the install command
-```
-cd mycroft-update-translations
-./mycroft-update-translations
 ```
 
 ## STT - Speech to Text
@@ -203,3 +199,71 @@ mycroft provides a pip wrapper to do the above for you, this might be or not ava
 - run the script explicitly ```mycroft-core/bin/mycroft-pip install jarbas-stt-plugin-chromium```
 - in a mark1 you will need to use sudo ```sudo mycroft-pip install jarbas-stt-plugin-chromium```
 
+# Translating Skills
+
+Translating skills is not straighforward, there are many edge cases
+
+## translate.mycroft.ai
+
+The best way to translate skills is by using the mycroft translate platform, go to [translate.mycroft.ai](https://translate.mycroft.ai/) and help translating the skill in the marketplace
+
+You will then have to wait for Mycroft (the company) to send the translations to the skills
+
+In the case of catalan there is a problem, because the translate platform is using the lang code  ```ca``` instead of  ```ca-es```, read section bellow for workarounnds
+
+## Exporting Pootle Manually
+
+As pointed above, skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work because they use ```ca``` locale. But, you can use a custom script to export strings from Pootle and put them with ```ca-es``` locale.
+
+Just:
+- clone [mycroft-update-translations](https://github.com/jmontane/mycroft-update-translations) repository in a working dir
+```
+git clone https://github.com/jmontane/mycroft-update-translations
+```
+- if needed, edit mycroft-update-translations.py and change settings. By default it translates skills in ```/opt/mycroft/skills/```
+
+and then run the install command
+```
+cd mycroft-update-translations
+./mycroft-update-translations
+```
+
+## Manual translation
+
+TODO
+
+
+## Corner cases
+
+some skills can not be easily translated and need a pull request to handle this in code:
+- they use a librayr / web api that expects english
+- they use a web api that returns english results
+- they need some language specific resource not accounted for by the original author
+
+## Replacing skills
+
+### News skill
+To support catalan we need to find a news provider for atalonia
+
+[this Pull Request](https://github.com/MycroftAI/skill-npr-news/pull/102) has been blocked due to a backend error
+
+You can install [skill-news](https://github.com/JarbasLingua/skill-news) and blacklist the official skill
+
+### Jokes
+
+the official jokes skill does not have jokes in catalan, you can trigger it (resource files have been translated) but it will not work correcly, it should be blacklisted to avoid conflicts
+
+TODO alternative skill
+
+### Wikipedia
+
+like in the jokes skill, the official skill is not coded in a way that works with other languages, even if resource files have been translated
+
+it should be blacklisted to avoid conflicts
+
+TODO alternative skill
+
+
+### blacklist official skills
+
+TODO 
