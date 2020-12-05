@@ -316,8 +316,10 @@ edit your .conf and add the following
 ### Jokes
 
 the official jokes skill does not have jokes in catalan, you can trigger it (resource files have been translated) but it will not work correcly, it should be blacklisted to avoid conflicts
+You can https://github.com/JarbasSkills/skill-icanhazdadjoke
 
-TODO alternative skill
+You can use my alternative skill, [skill-icanhazdadjoke](You can https://github.com/JarbasSkills/skill-icanhazdadjoke), using the [icanhazdadjoke.com/](https://icanhazdadjoke.com/) API, it will blacklist the default skill automatically and supports all languages (via google translate)
+
 
 ### Wikipedia
 
