@@ -286,11 +286,11 @@ A possible work around is using translation at runtime, see [wolfram alpha skill
 
 ### News skill
 
-To support catalan we need to find a news provider for atalonia
+To support catalan we need to find a news provider for Catalonia
 
-[this Pull Request](https://github.com/MycroftAI/skill-npr-news/pull/102) has been blocked due to a backend error
+[this Pull Request](https://github.com/MycroftAI/skill-npr-news/pull/102) adds [CCMA Catalunya Informació](https://www.ccma.cat/catradio/directe/catalunya-informacio/), but it has been blocked due to a mycroft backend bug
 
-You can install [skill-news](https://github.com/JarbasLingua/skill-news) and blacklist the official skill
+You can install [skill-news](https://github.com/JarbasLingua/skill-news), it will blacklist the default skill automatically and already supports catalan
 
 #### Configuring audio backend
 
@@ -329,7 +329,7 @@ You can use my alternative skill, [wikipedia-for-humans skill](https://github.co
 
 mycroft makes it hard to disable official skills, if you delete them they will be automatically reinstalled
 
-If you need to replace an official skill you have to blacklist it so it will not load
+If you need to replace an official skill you have to [blacklist it](https://mycroft-ai.gitbook.io/docs/skill-development/faq#how-do-i-disable-a-skill) so it will not load
 
 Edit your .conf and add the following section, make sure to use the exact names of the skill folders, usually of the format ```github_repo_name.author```
 
