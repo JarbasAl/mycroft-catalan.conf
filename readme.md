@@ -39,6 +39,8 @@ Note that is the home directory of the user running mycroft, in a mark one this 
 
 You can learn more about the .conf in the [docs](https://mycroft-ai.gitbook.io/docs/using-mycroft-ai/customizations/mycroft-conf)
 
+After you edit your .conf you should restart mycroft for changes to take effect
+
 ## Lang
 
 First we must set the global language of mycroft, this is what will be used to load skills and resource files
@@ -300,7 +302,7 @@ sudo apt-get install vlc
 
 edit your .conf and add the following
 
-```
+```json
   "Audio": {
     "backends": {
       "vlc": {
@@ -319,18 +321,61 @@ TODO alternative skill
 
 ### Wikipedia
 
-there have been reports in the chat that the official skill was not working properly for catalan, i have not tested this, however i have had probl eveems with the underlying package used by it even in english
+The official skill is supposed to support other languages, it uses the `translate_namedvalues` method described above, however there have been reports in the chat that the official skill was not working properly for catalan, i have not tested this
 
 You can use my alternative skill, [wikipedia-for-humans skill](https://github.com/JarbasSkills/skill-wikipedia-for-humans), using the [wikipedia_for_humans](https://github.com/HelloChatterbox/wikipedia_for_humans) package from [chatterbox](https://hellochatterbox.com), it will blacklist the default skill automatically and already supports catalan
 
-The official skill is supposed to support other languages, it uses the `translate_namedvalues` method from skills to lookup resources, this is a good approach for localization of skills, however it is not as straightforward as translating dialog files because the content of these files is not obvious and will depend on the code of a specific skill
-
-```python
-data = self.translate_namedvalues("wikipedia_lang")
-wiki.set_lang(data["code"])
-``` 
-
-
 ### blacklist official skills
 
-TODO 
+mycroft makes it hard to disable official skills, if you delete them they will be automatically reinstalled
+
+If you need to replace an official skill you have to blacklist it so it will not load
+
+Edit your .conf and add the following section, make sure to use the exact names of the skill folders, usually of the format ```github_repo_name.author```
+
+```json
+  "skills": {
+    "blacklisted_skills": ["mycroft-wiki.mycroftai", "mycroft-fallback-duck-duck-go.mycroftai"]
+  }
+```
+
+If you are writing a skill that explicitly replaces an official skill you can do the following in python
+
+
+```python
+from mycroft.messagebus.message import Message
+from mycroft.configuration import LocalConf, USER_CONFIG, Configuration
+
+
+class MyAlternativeSkill(MycroftSkill):
+
+    def initialize(self):
+        self.blacklist_default_skill()
+
+    def blacklist_default_skill(self):
+        # load the current list of already blacklisted skills
+        core_conf = Configuration.load_config_stack()
+        blacklist = core_conf["skills"]["blacklisted_skills"]
+        
+        # check the folder name (skill_id) of the skill you want to replace
+        skill_id = "mycroft-skill-to-replace.mycroftai"
+        
+        # add the skill to the blacklist
+        if skill_id not in blacklist:
+            self.log.debug("Blacklisting official mycroft skill")
+            blacklist.append(skill_id)
+            
+            # load the user config file (~/.mycroft/mycroft.conf)
+            conf = LocalConf(USER_CONFIG)
+            if "skills" not in conf:
+                conf["skills"] = {}
+            conf["skills"]["blacklisted_skills"] = blacklist
+            
+            # save the user config file
+            conf.store()
+
+        # tell the intent service to unload the skill in case it was loaded already
+        # this should avoid the need to restart
+        self.bus.emit(Message("detach_skill", {"skill_id": skill_id}))
+
+```
