@@ -65,6 +65,8 @@ The best way to workaround this is using plugins that support languages correctl
 
 ### List of plugins that support catalan
 
+Detailed plugin installation instructions available in [plugins section](#installing-plugins)
+
 - [google chromium](https://github.com/JarbasLingua/jarbas-stt-plugin-chromium)
 - [vosk](https://github.com/JarbasLingua/jarbas-stt-plugin-vosk)
 - [pocketsphinx](https://github.com/JarbasLingua/jarbas-stt-plugin-pocketsphinx)
@@ -72,7 +74,15 @@ The best way to workaround this is using plugins that support languages correctl
 
 ### STT Config
 
-Let's configure the [google chromium plugin](https://github.com/JarbasLingua/jarbas-stt-plugin-chromium) and override the language code
+#### Installing jarbas-stt-plugin-chromium
+
+Let's avoid using mycroft STT because it can stop working at any time
+
+```
+mycroft-pip install jarbas-stt-plugin-chromium
+```
+
+configure the [google chromium plugin](https://github.com/JarbasLingua/jarbas-stt-plugin-chromium) and override the language code
 
 ```json
 {
@@ -99,7 +109,7 @@ once more we need to select an engine that supports catalan, by default mycroft 
 
 ### List of plugins that support catalan
 
-Installing plugins was described in detail in the STT section
+Detailed plugin installation instructions available in [plugins section](#installing-plugins)
 
 - [catotron](https://github.com/JarbasLingua/jarbas-tts-plugin-catotron) - best quality, but slow
 - [softcatala](https://github.com/JarbasLingua/jarbas-tts-plugin-softcatala) - same as festival, but running in a server
