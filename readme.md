@@ -90,7 +90,7 @@ Let's configure the plugin and override the language code
 ### List of core engines that support catalan 
 
 - mycroft - only works if global lang is ```ca-es```
-- [google cloud](https://github.com/MycroftAI/mycroft-core/blob/dev/mycroft/stt/__init__.py#L109) - allows overriding global language
+- google cloud - allows [overriding global language](](https://github.com/MycroftAI/mycroft-core/blob/dev/mycroft/stt/__init__.py#L109))
 - google - to be used you need to add a api key, but keys are no longer issued, see details in [google chromium plugin](https://github.com/JarbasLingua/jarbas-stt-plugin-chromium), this is effectively useless
 
 ## TTS - Text to Speech
