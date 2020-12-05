@@ -35,7 +35,7 @@ SPECIAL NOTES:
 - any skill with a single file not translated will not load, all files must be translated
 - the language code must match exactly! I submitted a [PR to improve this](https://github.com/MycroftAI/mycroft-core/pull/1335) back in 2017, but it was completely ignored
 - this must match the [lang code for mycroft-core resource files](https://github.com/MycroftAI/mycroft-core/tree/dev/mycroft/res/text), in our case ```ca-es```
-- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work
+- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work. See below.
 
 ### Lang Config
 
@@ -44,6 +44,22 @@ SPECIAL NOTES:
   "lang": "ca-es"
 }
 ```
+## Fixing translations of skills
+
+As pointed above, skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work because they use ```ca``` locale. But, you can use a custom script to export strings from Pootle and put them with ```ca-es``` locale.
+
+Just:
+- clone [mycroft-update-translations](https://github.com/jmontane/mycroft-update-translations) repository in a working dir
+```
+git clone https://github.com/jmontane/mycroft-update-translations
+```
+- if needed, edit mycroft-update-translations.py and change settings. By default it translates skills in ```/opt/mycroft/skills/```
+
+and then run the install command
+```
+cd mycroft-update-translations
+./mycroft-update-translations
+```
 
 ## STT - Speech to Text
 
@@ -51,7 +67,7 @@ We need to configure an engine that supports Catalan, google chrome STT supports
 
 SPECIAL NOTES:
 - mycroft backend should just work with most languages
-- chromium STT expects language code `ca-es`
+- chromium STT expects language code `ca-es`, it doesn't work if you use `ca` language code
 - for catalan we get a conflict because of lang code used in skills is ```ca```
 - most STT engines [do not allow overriding the language code](https://github.com/MycroftAI/mycroft-core/blob/dev/mycroft/stt/__init__.py#L33) unless implemented manually
 
