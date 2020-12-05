@@ -44,10 +44,9 @@ You can learn more about the .conf in the [docs](https://mycroft-ai.gitbook.io/d
 First we must set the global language of mycroft, this is what will be used to load skills and resource files
 
 SPECIAL NOTES:
-- any skill with a single file not translated will not load, all files must be translated
-- the language code must match exactly! I submitted a [PR to improve this](https://github.com/MycroftAI/mycroft-core/pull/1335) back in 2017, but it was completely ignored
 - this must match the [lang code for mycroft-core resource files](https://github.com/MycroftAI/mycroft-core/tree/dev/mycroft/res/text), in our case ```ca-es```
-- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work. See below.
+- the language code must match exactly! I submitted a [PR to improve this](https://github.com/MycroftAI/mycroft-core/pull/1335) back in 2017, but it was completely ignored
+- skills will also use this lang code to search for resource files
 
 ### Lang Config
 
@@ -202,6 +201,11 @@ mycroft provides a pip wrapper to do the above for you, this might be or not ava
 # Translating Skills
 
 Translating skills is not straighforward, there are many edge cases
+
+SPECIAL NOTES:
+- any skill with a single file not translated will not load, all files must be translated
+- the language code must match exactly the global config! I submitted a [PR to improve this](https://github.com/MycroftAI/mycroft-core/pull/1335) back in 2017, but it was completely ignored
+- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work. See below.
 
 ## translate.mycroft.ai
 
