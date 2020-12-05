@@ -49,6 +49,7 @@ SPECIAL NOTES:
 - this must match the [lang code for mycroft-core resource files](https://github.com/MycroftAI/mycroft-core/tree/dev/mycroft/res/text), in our case ```ca-es```
 - the language code must match exactly! I submitted a [PR to improve this](https://github.com/MycroftAI/mycroft-core/pull/1335) back in 2017, but it was completely ignored
 - skills will also use this lang code to search for resource files
+- The terms "language code" and "lang code" refer to a [BCP-47 language code](https://en.wikipedia.org/wiki/IETF_language_tag), commonly used by computers to identify a language and region. Today, we'll be using the language code "ca-es", referring to the dialect of Catalan commonly spoken in Spain. Other familiar examples include "en-us" (English/United States) and "es-es" (Castillian/Spain)"
 
 ### Lang Config
 
