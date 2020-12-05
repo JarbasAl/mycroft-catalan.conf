@@ -235,6 +235,40 @@ cd mycroft-update-translations
 
 TODO
 
+### Resource files
+
+some skills will need different values to use in the code depending on the language, a common approach is using the `translate_namedvalues` method from skills to lookup resources, this is essentially a .csv file with value pairs used to populate a python dictionary
+
+this is a good approach for localization of skills, however it is not as straightforward as translating dialog files because the content of these files is not obvious and will depend on the code of a specific skill
+
+using the official wikipedia skill as an example, the following directory structure will include the data to translate
+```
+- dialog
+  - en-us
+    - wikipedia_lang.value
+  - ca-es
+    - wikipedia_lang.value
+```
+
+the contents of (en-us) wikipedia_lang.value are
+```
+# Wikipedia language code used to service queries in the active language
+code,en
+```
+
+the contents of (ca-es) wikipedia_lang.value are
+```
+# Codi de llengua de Viquipèdia usat per a fer consultes en la llengua activa
+code,ca
+```
+
+this can be used in code this way
+```python
+data = self.translate_namedvalues("wikipedia_lang")
+wiki.set_lang(data["code"])
+``` 
+
+if you translated the file above as ```code, ca-es``` the skill will not work, as a translator you have no way to know this without checking the code, so i recommend leaving a comment with link to relevant documentation, as you can see in examples above lines starting with # are ignored
 
 ## Corner cases
 
@@ -288,6 +322,13 @@ TODO alternative skill
 there have been reports in the chat that the official skill was not working properly for catalan, i have not tested this, however i have had probl eveems with the underlying package used by it even in english
 
 You can use my alternative skill, [wikipedia-for-humans skill](https://github.com/JarbasSkills/skill-wikipedia-for-humans), using the [wikipedia_for_humans](https://github.com/HelloChatterbox/wikipedia_for_humans) package from [chatterbox](https://hellochatterbox.com), it will blacklist the default skill automatically and already supports catalan
+
+The official skill is supposed to support other languages, it uses the `translate_namedvalues` method from skills to lookup resources, this is a good approach for localization of skills, however it is not as straightforward as translating dialog files because the content of these files is not obvious and will depend on the code of a specific skill
+
+```python
+data = self.translate_namedvalues("wikipedia_lang")
+wiki.set_lang(data["code"])
+``` 
 
 
 ### blacklist official skills
