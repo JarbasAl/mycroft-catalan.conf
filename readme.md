@@ -113,8 +113,8 @@ once more we need to select an engine that supports catalan, by default mycroft 
 
 ### List of core engines that support catalan
 
-- espeak - needs to be manually installed
-- festival - needs to be manually installed
+- espeak - needs to be manually installed, very robotic!
+- festival - needs to be manually installed, acceptable quality
 - gtts - can be set from web interface, breaks often (uses google translate undocumented web api)
 - google cloud - best accuracy, not free
 
