@@ -493,6 +493,8 @@ You can change 2 parameters to improve detection with your voice
 
 If you use the [naptime skill](https://github.com/MycroftAI/skill-naptime) you can tell mycroft to "go to sleep", when you do this STT will NOT be processed, this is a privacy feature
 
+This stops all calls to Speech to Text system, guaranteeing your voice won't be sent anywhere on an accidental activation.
+
 But the implication of this is that you must translate this wake word, by default it is in english "wake up"
 
 SPECIAL NOTES: 
