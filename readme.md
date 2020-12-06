@@ -7,7 +7,7 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
   * [translate.mycroft.ai](#translatemycroftai)
   * [Exporting Pootle Manually](#exporting-pootle-manually)
   * [Manual translation](#manual-translation)
-    + [vocab / dialogs / locale](#vocab---dialogs---locale)
+    + [locale](#locale)
     + [Resource files](#resource-files)
     + [Pull Request](#pull-request)
   * [Corner cases](#corner-cases)
@@ -91,7 +91,7 @@ cd mycroft-update-translations
 
 ## Manual translation
 
-### vocab / dialogs / locale
+### locale
 
 TODO
 
@@ -101,7 +101,7 @@ some skills will need different values to use in the code depending on the langu
 
 this is a good approach for localization of skills, however it is not as straightforward as translating dialog files because the content of these files is not obvious and will depend on the code of a specific skill
 
-using the official wikipedia skill as an example, the following directory structure will include the data to translate
+using the official wikipedia skill as an example, we need to translate this file that tells the wikipedia package what lang-code to use
 ```
 - dialog
   - en-us
@@ -137,7 +137,7 @@ TODO
 ## Corner cases
 
 some skills can not be easily translated and need a pull request to handle this in code:
-- they use a librayr / web api that expects english
+- they use a library / web api that expects english
 - they use a web api that returns english results
 - they need some language specific resource not accounted for by the original author
 
@@ -269,6 +269,8 @@ To blacklist the official skills incompatible with catalan edit your .conf and a
     ]
   }
 ```
+
+
 
 If you are writing a skill that explicitly replaces an official skill you can do the following in python
 
