@@ -16,7 +16,7 @@ Nota: aquest document és una traducció de l'original en anglès que podeu cons
     + [Habilitat de bromes (jokes)](#habilitat-de-bromes--jokes-)
     + [Habilitat de notícies](#habilitat-de-notícies)
       - [Configuració del motor d'àudio](#configuració-del-motor-dàudio)
-    + [blacklist official skills](#blacklist-official-skills)
+    + [Desactivació d'habilitats oficials](#desactivació-dhabilitats-oficials)
 - [Instal·lació d'extensions (plugins)](#installació-dextensions-plugins)
   * [Instal·lació manual](#installació-manual)
   * [Mycroft-pip](#mycroft-pip)
@@ -28,7 +28,7 @@ Nota: aquest document és una traducció de l'original en anglès que podeu cons
   * [Reconeixement de la parla (STT, Speech to Text)](#reconeixement-de-la-parla-stt-speech-to-text)
     + [Llista de motors del nucli que admeten el català](#llista-de-motors-del-nucli-que-admeten-el-català)
     + [Llista d'extensions que admeten el català](#llista-dextensions-que-admeten-el-català)
-    + [Configuració de l'STT](#configuració-de-l-stt)
+    + [Configuració del motor STT](#configuració-del-motor-stt)
       - [Instal·lació de jarbas-stt-plugin-chromium](#installació-de-jarbas-stt-plugin-chromium)
   * [Síntesi de veu (TTS, Text to Speech)](#síntesi-de-veu--tts-text-to-speech)
     + [Llista de motors del nucli que admeten el català](#llista-de-motors-del-nucli-que-admeten-el-català-1)
@@ -253,7 +253,7 @@ Editeu el vostre fitxer ```mycroft.conf``` i afegiu-hi el següent:
 ```
 
 
-### blacklist official skills
+### Desactivació d'habilitats oficials
 
 Mycroft fa difícil de desactivar les habilitats oficials, encara que les esborreu es tornen a instal·lar automàticament.
 
@@ -420,7 +420,7 @@ Teniu instruccions detallades sobre la instal·lació d'extensions a la [secció
 - [pocketsphinx](https://github.com/JarbasLingua/jarbas-stt-plugin-pocketsphinx)
 
 
-### Configuració de l'STT
+### Configuració del motor STT
 
 #### Instal·lació de jarbas-stt-plugin-chromium
 
