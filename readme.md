@@ -29,12 +29,12 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
     + [List of plugins that support catalan](#list-of-plugins-that-support-catalan-1)
     + [TTS Config](#tts-config)
       - [Installing festival](#installing-festival)
-- [Wake Words](#wake-words)
-    + [Precise 0.3](#precise-03)
-    + [Precise 0.2](#precise-02)
-    + [Wake word - Ey Ordenador](#wake-word---ey-ordenador)
-    + [Standup word - Desperta](#standup-word---desperta)
-  * [Final config](#final-config)
+  * [Wake Words](#wake-words)
+      + [Precise 0.3](#precise-03)
+      + [Precise 0.2](#precise-02)
+      + [Wake word - Ey Ordenador](#wake-word---ey-ordenador)
+      + [Standup word - Desperta](#standup-word---desperta)
+- [Final config](#final-config)
 
 
 # Translating Skills
@@ -236,11 +236,15 @@ mycroft makes it hard to disable official skills, if you delete them they will b
 
 If you need to replace an official skill you have to [blacklist it](https://mycroft-ai.gitbook.io/docs/skill-development/faq#how-do-i-disable-a-skill) so it will not load
 
-Edit your .conf and add the following section, make sure to use the exact names of the skill folders, usually of the format ```github_repo_name.author```
+To blacklist the official skills incompatible with catalan edit your .conf and add the following section, make sure to use the exact names of the skill folders, usually of the format ```github_repo_name.author```
 
 ```json
   "skills": {
-    "blacklisted_skills": ["mycroft-wiki.mycroftai", "mycroft-fallback-duck-duck-go.mycroftai"]
+    "blacklisted_skills": [
+          "mycroft-npr-news.mycroftai", 
+          "mycroft-fallback-duck-duck-go.mycroftai", 
+          "mycroft-joke.mycroftai"
+    ]
   }
 ```
 
@@ -434,7 +438,7 @@ sudo apt-get -y install festival festvox-ca-ona-hts lame
 }
 ```
 
-# Wake Words
+## Wake Words
 
 A mycroft wake word is what you need to say to make mycroft start listening
 
@@ -556,7 +560,7 @@ TODO - finish this section, models not yet ready
 Now you can wake up mycroft in catalan! "ey ordenador, desperta"
 
 
-## Final config
+# Final config
 
 This was a long tutorial, but if you following everything your .conf should look like this
 
@@ -577,6 +581,13 @@ This was a long tutorial, but if you following everything your .conf should look
           "encoding": "ISO-8859-15//TRANSLIT"
       }
    },
+  "skills": {
+    "blacklisted_skills": [
+          "mycroft-npr-news.mycroftai", 
+          "mycroft-fallback-duck-duck-go.mycroftai", 
+          "mycroft-joke.mycroftai"
+    ]
+  },
   "listener": {
       "wake_word": "ey_ordenador",   
       "stand_up_word": "desperta"
