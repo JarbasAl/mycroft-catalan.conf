@@ -2,6 +2,20 @@
 
 Bellow is a step by step guide to configure mycroft in catalan
 
+- [Translating Skills](#translating-skills)
+  * [translate.mycroft.ai](#translatemycroftai)
+  * [Exporting Pootle Manually](#exporting-pootle-manually)
+  * [Manual translation](#manual-translation)
+    + [Resource files](#resource-files)
+  * [Corner cases](#corner-cases)
+  * [Replacing skills](#replacing-skills)
+    + [Jokes](#jokes)
+    + [News skill](#news-skill)
+      - [Configuring audio backend](#configuring-audio-backend)
+    + [blacklist official skills](#blacklist-official-skills)
+- [Installing plugins](#installing-plugins)
+  * [Manual install](#manual-install)
+  * [Mycroft-pip](#mycroft-pip)
 - [mycroft.conf](#mycroftconf)
   * [Lang](#lang)
     + [Lang Config](#lang-config)
@@ -21,21 +35,219 @@ Bellow is a step by step guide to configure mycroft in catalan
       + [Ey Ordenador](#ey-ordenador)
       + [Standup word - Desperta](#standup-word---desperta)
   * [Final config](#final-config)
-- [Installing plugins](#installing-plugins)
-  * [Manual install](#manual-install)
-  * [Mycroft-pip](#mycroft-pip)
-- [Translating Skills](#translating-skills)
-  * [translate.mycroft.ai](#translatemycroftai)
-  * [Exporting Pootle Manually](#exporting-pootle-manually)
-  * [Manual translation](#manual-translation)
-    + [Resource files](#resource-files)
-  * [Corner cases](#corner-cases)
-  * [Replacing skills](#replacing-skills)
-    + [Jokes](#jokes)
-    + [News skill](#news-skill)
-      - [Configuring audio backend](#configuring-audio-backend)
-    + [blacklist official skills](#blacklist-official-skills)
 
+# Translating Skills
+
+Translating skills is not straighforward, there are many edge cases
+
+SPECIAL NOTES:
+- any skill with a single file not translated will not load, all files must be translated
+- the language code must match exactly the global config! I submitted a [PR to improve this](https://github.com/MycroftAI/mycroft-core/pull/1335) back in 2017, but it was completely ignored, i closed it (unmerged) after 3 years
+- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work. 
+
+## translate.mycroft.ai
+
+The best way to translate skills is by using the mycroft translate platform, go to [translate.mycroft.ai](https://translate.mycroft.ai/) and help translating the skill in the marketplace
+
+You will then have to wait for Mycroft (the company) to send the translations to the skills repositories
+
+In the case of catalan there is a problem, because the translate platform is using the lang code  ```ca``` instead of  ```ca-es```, read section bellow for workarounnds
+
+## Exporting Pootle Manually
+
+As pointed above, skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work because they use ```ca``` locale. But, you can use a custom script to export strings from Pootle and put them with ```ca-es``` locale.
+
+Just:
+- clone [mycroft-update-translations](https://github.com/jmontane/mycroft-update-translations) repository in a working dir
+```
+git clone https://github.com/jmontane/mycroft-update-translations
+```
+- if needed, edit mycroft-update-translations.py and change settings. By default it translates skills in ```/opt/mycroft/skills/```
+
+and then run the install command
+```
+cd mycroft-update-translations
+./mycroft-update-translations
+```
+
+## Manual translation
+
+TODO
+
+### Resource files
+
+some skills will need different values to use in the code depending on the language, a common approach is using the `translate_namedvalues` method from skills to lookup resources, this is essentially a .csv file with value pairs used to populate a python dictionary
+
+this is a good approach for localization of skills, however it is not as straightforward as translating dialog files because the content of these files is not obvious and will depend on the code of a specific skill
+
+using the official wikipedia skill as an example, the following directory structure will include the data to translate
+```
+- dialog
+  - en-us
+    - wikipedia_lang.value
+  - ca-es
+    - wikipedia_lang.value
+```
+
+the contents of (en-us) wikipedia_lang.value are
+```
+# Wikipedia language code used to service queries in the active language
+code,en
+```
+
+the contents of (ca-es) wikipedia_lang.value are
+```
+# Codi de llengua de Viquipèdia usat per a fer consultes en la llengua activa
+code,ca
+```
+
+this can be used in code this way
+```python
+data = self.translate_namedvalues("wikipedia_lang")
+wiki.set_lang(data["code"])
+``` 
+
+if you translated the file above as ```code,ca-es``` the skill will not work, as a translator you have no way to know this without checking the code, so i recommend leaving a comment with link to relevant documentation, as you can see in examples above lines starting with # are ignored
+
+## Corner cases
+
+some skills can not be easily translated and need a pull request to handle this in code:
+- they use a librayr / web api that expects english
+- they use a web api that returns english results
+- they need some language specific resource not accounted for by the original author
+
+A possible work around is using translation at runtime, see [wolfram alpha skill](https://github.com/MycroftAI/fallback-wolfram-alpha/blob/20.08/__init__.py#L188) which does this
+
+
+## Replacing skills
+
+
+### Jokes
+
+the official jokes skill does not have jokes in catalan, you can trigger it (resource files have been translated) but it will not work correcly, it should be blacklisted to avoid conflicts
+
+You can use my alternative skill, [skill-icanhazdadjoke](https://github.com/JarbasSkills/skill-icanhazdadjoke), using the [icanhazdadjoke.com/](https://icanhazdadjoke.com/) API, it will blacklist the default skill automatically and supports all languages (via google translate)
+
+```
+msm install https://github.com/JarbasSkills/skill-icanhazdadjoke
+```
+
+### News skill
+
+To support catalan we need to find a news provider for Catalonia
+
+[this Pull Request](https://github.com/MycroftAI/skill-npr-news/pull/102) adds [CCMA Catalunya Informació](https://www.ccma.cat/catradio/directe/catalunya-informacio/), but it has been blocked due to a mycroft backend bug
+
+You can install [skill-news](https://github.com/JarbasLingua/skill-news), it will blacklist the default skill automatically and already supports catalan
+
+NOTE: this is temporary, once mycroft supports this i will deprecate this skill, but i intend to do this gracefully and whitelist the original again automatically, no action needed from your part
+
+```
+msm install https://github.com/JarbasLingua/skill-news
+```
+
+#### Configuring audio backend
+
+By default mycroft uses a simple audio backend that has issues with http streams, we need to make mycroft use vlc instead, this will also allow many other skills to also work
+
+```bash
+sudo apt-get install vlc
+```
+
+edit your .conf and add the following
+
+```json
+  "Audio": {
+    "backends": {
+      "vlc": {
+        "active": true
+      }
+    },
+    "default-backend": "vlc"
+  }
+```
+
+
+### blacklist official skills
+
+mycroft makes it hard to disable official skills, if you delete them they will be automatically reinstalled
+
+If you need to replace an official skill you have to [blacklist it](https://mycroft-ai.gitbook.io/docs/skill-development/faq#how-do-i-disable-a-skill) so it will not load
+
+Edit your .conf and add the following section, make sure to use the exact names of the skill folders, usually of the format ```github_repo_name.author```
+
+```json
+  "skills": {
+    "blacklisted_skills": ["mycroft-wiki.mycroftai", "mycroft-fallback-duck-duck-go.mycroftai"]
+  }
+```
+
+If you are writing a skill that explicitly replaces an official skill you can do the following in python
+
+
+```python
+from mycroft.messagebus.message import Message
+from mycroft.configuration import LocalConf, USER_CONFIG
+
+
+class MyAlternativeSkill(MycroftSkill):
+
+    def initialize(self):
+        self.blacklist_default_skill()
+
+    def blacklist_default_skill(self):
+        # load the current list of already blacklisted skills
+        blacklist = self.config_core["skills"]["blacklisted_skills"]
+        
+        # check the folder name (skill_id) of the skill you want to replace
+        skill_id = "mycroft-skill-to-replace.mycroftai"
+        
+        # add the skill to the blacklist
+        if skill_id not in blacklist:
+            self.log.debug("Blacklisting official mycroft skill")
+            blacklist.append(skill_id)
+            
+            # load the user config file (~/.mycroft/mycroft.conf)
+            conf = LocalConf(USER_CONFIG)
+            if "skills" not in conf:
+                conf["skills"] = {}
+
+            # update the blacklist field
+            conf["skills"]["blacklisted_skills"] = blacklist
+            
+            # save the user config file
+            conf.store()
+
+        # tell the intent service to unload the skill in case it was loaded already
+        # this should avoid the need to restart
+        self.bus.emit(Message("detach_skill", {"skill_id": skill_id}))
+
+```
+
+# Installing plugins
+
+To install a plugin you can use pip, this needs to be inside the mycroft venv!
+
+You can do this in several ways
+
+## Manual install
+
+- manually activate the .venv, ```source mycroft-core/.venv/bin/activate```
+- use the mycroft script alias (might not be available) ```mycroft-venv-activate```
+- run the script explicitly ```mycroft-core/venv-activate.sh```
+
+then run the install command
+```
+pip install jarbas-stt-plugin-chromium
+```
+
+## Mycroft-pip
+
+mycroft provides a pip wrapper to do the above for you, this might be or not available in your platform
+
+- use the mycroft alias (might not be available) ```mycroft-pip install jarbas-stt-plugin-chromium```
+- run the script explicitly ```mycroft-core/bin/mycroft-pip install jarbas-stt-plugin-chromium```
+- in a mark1 you will need to use sudo ```sudo mycroft-pip install jarbas-stt-plugin-chromium```
 
 
 # mycroft.conf
@@ -322,160 +534,9 @@ This was a long tutorial, but if you following everything your .conf should look
             {"sensitivity": 0.5, "model_path": "desperta_XXX.pmdl"},
             {"sensitivity": 0.5, "model_path": "desperta_YYY.pmdl"}
          ]
-    }
-}
-```
-
-
-
-
-# Installing plugins
-
-To install a plugin you can use pip, this needs to be inside the mycroft venv!
-
-You can do this in several ways
-
-## Manual install
-
-- manually activate the .venv, ```source mycroft-core/.venv/bin/activate```
-- use the mycroft script alias (might not be available) ```mycroft-venv-activate```
-- run the script explicitly ```mycroft-core/venv-activate.sh```
-
-then run the install command
-```
-pip install jarbas-stt-plugin-chromium
-```
-
-## Mycroft-pip
-
-mycroft provides a pip wrapper to do the above for you, this might be or not available in your platform
-
-- use the mycroft alias (might not be available) ```mycroft-pip install jarbas-stt-plugin-chromium```
-- run the script explicitly ```mycroft-core/bin/mycroft-pip install jarbas-stt-plugin-chromium```
-- in a mark1 you will need to use sudo ```sudo mycroft-pip install jarbas-stt-plugin-chromium```
-
-# Translating Skills
-
-Translating skills is not straighforward, there are many edge cases
-
-SPECIAL NOTES:
-- any skill with a single file not translated will not load, all files must be translated
-- the language code must match exactly the global config! I submitted a [PR to improve this](https://github.com/MycroftAI/mycroft-core/pull/1335) back in 2017, but it was completely ignored, i closed it (unmerged) after 3 years
-- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work. See below.
-
-## translate.mycroft.ai
-
-The best way to translate skills is by using the mycroft translate platform, go to [translate.mycroft.ai](https://translate.mycroft.ai/) and help translating the skill in the marketplace
-
-You will then have to wait for Mycroft (the company) to send the translations to the skills
-
-In the case of catalan there is a problem, because the translate platform is using the lang code  ```ca``` instead of  ```ca-es```, read section bellow for workarounnds
-
-## Exporting Pootle Manually
-
-As pointed above, skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work because they use ```ca``` locale. But, you can use a custom script to export strings from Pootle and put them with ```ca-es``` locale.
-
-Just:
-- clone [mycroft-update-translations](https://github.com/jmontane/mycroft-update-translations) repository in a working dir
-```
-git clone https://github.com/jmontane/mycroft-update-translations
-```
-- if needed, edit mycroft-update-translations.py and change settings. By default it translates skills in ```/opt/mycroft/skills/```
-
-and then run the install command
-```
-cd mycroft-update-translations
-./mycroft-update-translations
-```
-
-## Manual translation
-
-TODO
-
-### Resource files
-
-some skills will need different values to use in the code depending on the language, a common approach is using the `translate_namedvalues` method from skills to lookup resources, this is essentially a .csv file with value pairs used to populate a python dictionary
-
-this is a good approach for localization of skills, however it is not as straightforward as translating dialog files because the content of these files is not obvious and will depend on the code of a specific skill
-
-using the official wikipedia skill as an example, the following directory structure will include the data to translate
-```
-- dialog
-  - en-us
-    - wikipedia_lang.value
-  - ca-es
-    - wikipedia_lang.value
-```
-
-the contents of (en-us) wikipedia_lang.value are
-```
-# Wikipedia language code used to service queries in the active language
-code,en
-```
-
-the contents of (ca-es) wikipedia_lang.value are
-```
-# Codi de llengua de Viquipèdia usat per a fer consultes en la llengua activa
-code,ca
-```
-
-this can be used in code this way
-```python
-data = self.translate_namedvalues("wikipedia_lang")
-wiki.set_lang(data["code"])
-``` 
-
-if you translated the file above as ```code, ca-es``` the skill will not work, as a translator you have no way to know this without checking the code, so i recommend leaving a comment with link to relevant documentation, as you can see in examples above lines starting with # are ignored
-
-## Corner cases
-
-some skills can not be easily translated and need a pull request to handle this in code:
-- they use a librayr / web api that expects english
-- they use a web api that returns english results
-- they need some language specific resource not accounted for by the original author
-
-A possible work around is using translation at runtime, see [wolfram alpha skill](https://github.com/MycroftAI/fallback-wolfram-alpha/blob/20.08/__init__.py#L188) which does this
-
-
-## Replacing skills
-
-
-### Jokes
-
-the official jokes skill does not have jokes in catalan, you can trigger it (resource files have been translated) but it will not work correcly, it should be blacklisted to avoid conflicts
-
-You can use my alternative skill, [skill-icanhazdadjoke](https://github.com/JarbasSkills/skill-icanhazdadjoke), using the [icanhazdadjoke.com/](https://icanhazdadjoke.com/) API, it will blacklist the default skill automatically and supports all languages (via google translate)
-
-```
-msm install https://github.com/JarbasSkills/skill-icanhazdadjoke
-```
-
-### News skill
-
-To support catalan we need to find a news provider for Catalonia
-
-[this Pull Request](https://github.com/MycroftAI/skill-npr-news/pull/102) adds [CCMA Catalunya Informació](https://www.ccma.cat/catradio/directe/catalunya-informacio/), but it has been blocked due to a mycroft backend bug
-
-You can install [skill-news](https://github.com/JarbasLingua/skill-news), it will blacklist the default skill automatically and already supports catalan
-
-NOTE: this is temporary, once mycroft supports this i will deprecate this skill, but i intend to do this gracefully and whitelist the original again automatically, no action needed from your part
-
-```
-msm install https://github.com/JarbasLingua/skill-news
-```
-
-#### Configuring audio backend
-
-By default mycroft uses a simple audio backend that has issues with http streams, we need to make mycroft use vlc instead, this will also allow many other skills to also work
-
-```bash
-sudo apt-get install vlc
-```
-
-edit your .conf and add the following
-
-```json
-  "Audio": {
+      }
+   },
+   "Audio": {
     "backends": {
       "vlc": {
         "active": true
@@ -483,61 +544,9 @@ edit your .conf and add the following
     },
     "default-backend": "vlc"
   }
+}
 ```
 
 
-### blacklist official skills
-
-mycroft makes it hard to disable official skills, if you delete them they will be automatically reinstalled
-
-If you need to replace an official skill you have to [blacklist it](https://mycroft-ai.gitbook.io/docs/skill-development/faq#how-do-i-disable-a-skill) so it will not load
-
-Edit your .conf and add the following section, make sure to use the exact names of the skill folders, usually of the format ```github_repo_name.author```
-
-```json
-  "skills": {
-    "blacklisted_skills": ["mycroft-wiki.mycroftai", "mycroft-fallback-duck-duck-go.mycroftai"]
-  }
-```
-
-If you are writing a skill that explicitly replaces an official skill you can do the following in python
 
 
-```python
-from mycroft.messagebus.message import Message
-from mycroft.configuration import LocalConf, USER_CONFIG
-
-
-class MyAlternativeSkill(MycroftSkill):
-
-    def initialize(self):
-        self.blacklist_default_skill()
-
-    def blacklist_default_skill(self):
-        # load the current list of already blacklisted skills
-        blacklist = self.config_core["skills"]["blacklisted_skills"]
-        
-        # check the folder name (skill_id) of the skill you want to replace
-        skill_id = "mycroft-skill-to-replace.mycroftai"
-        
-        # add the skill to the blacklist
-        if skill_id not in blacklist:
-            self.log.debug("Blacklisting official mycroft skill")
-            blacklist.append(skill_id)
-            
-            # load the user config file (~/.mycroft/mycroft.conf)
-            conf = LocalConf(USER_CONFIG)
-            if "skills" not in conf:
-                conf["skills"] = {}
-
-            # update the blacklist field
-            conf["skills"]["blacklisted_skills"] = blacklist
-            
-            # save the user config file
-            conf.store()
-
-        # tell the intent service to unload the skill in case it was loaded already
-        # this should avoid the need to restart
-        self.bus.emit(Message("detach_skill", {"skill_id": skill_id}))
-
-```
