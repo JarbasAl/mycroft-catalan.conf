@@ -164,7 +164,9 @@ sudo apt-get -y install festival festvox-ca-ona-hts lame
 
 A mycroft wake word is what you need to say to make mycroft start listening
 
-Mycrofts uses [precise](https://github.com/MycroftAI/mycroft-precise) for this, it is a model trained on sounds therefore it does not need "translation", if you want to change the name of mycroft then you need to get 50+ recordings and [train a model](https://mycroft-ai.gitbook.io/docs/using-mycroft-ai/customizations/wake-word#training-a-wake-word-model), some users struggle with training so i recommend you check [Precise Community Repo](https://github.com/MycroftAI/precise-community-data), if you upload your recordings the community will train a model for you! This also means the model will keep improving over time
+Mycrofts uses [precise](https://github.com/MycroftAI/mycroft-precise) for this, it is a model trained on sounds therefore it does not need "translation", if you want to change the name of mycroft then you need to get 50+ recordings and [train a model](https://mycroft-ai.gitbook.io/docs/using-mycroft-ai/customizations/wake-word#training-a-wake-word-model)
+
+Some users struggle with training so i recommend you check [Precise Community Repo](https://github.com/MycroftAI/precise-community-data), if you upload your recordings the community will train a model for you! This also means the model will keep improving over time
 
 There are two wake words we need to configure, the "name" of mycroft, and the stand up word "wake up"  (more info on this bellow)
 
