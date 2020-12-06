@@ -119,7 +119,66 @@ some skills can not be easily translated and need a pull request to handle this 
 - they use a web api that returns english results
 - they need some language specific resource not accounted for by the original author
 
-A possible work around is using translation at runtime, see [wolfram alpha skill](https://github.com/MycroftAI/fallback-wolfram-alpha/blob/20.08/__init__.py#L188) which does this
+A possible work around is using translation at runtime, the official [wolfram alpha skill](https://github.com/MycroftAI/fallback-wolfram-alpha/blob/20.08/__init__.py#L188) does this, i do the same in my [icanhazdadjoke skill](jokeshttps://github.com/JarbasSkills/skill-icanhazdadjoke)
+
+If you are developing skills here is a template you can use as a starting point
+
+```python
+from mycroft.skills.core import MycroftSkill, intent_handler
+from google_trans_new import google_translator
+
+class MySkill(MycroftSkill):
+    def __init__(self):
+        super().__init__(name="MySkill")
+        self.translator = google_translator()
+        self.tx_cache = {}  # avoid translating twice
+
+    @intent_handler("my_intent.intent")
+    def handle_intent(self, message):
+        # do something that returns english utterance
+        (...)
+        # translate response to user language
+        translated_utt = self.translate(value)
+        self.speak(translated_utt)
+
+    @intent_handler("my_other_intent.intent")
+    def handle_english_input_intent(self, message):
+        # get the value that needs to be in english but is in user language
+        value = message.data["value"]
+        # translate it to english
+        tx_value = self.translate(value, "en", self.lang)
+        
+        # do something with tx_value
+        eng_utt = "this is in english, but will be spoken in catalan"
+        
+        # translate response to user language
+        translated_utt = self.translate(eng_utt)
+        self.speak(translated_utt)
+
+    def translate(self, utterance, lang_tgt=None, lang_src="en"):
+        lang_tgt = lang_tgt or self.lang
+
+        # if langs are the same do nothing
+        if not lang_tgt.startswith(lang_src):
+            if lang_tgt not in self.tx_cache:
+                self.tx_cache[lang_tgt] = {}
+            # if translated before, dont translate again
+            if utterance in self.tx_cache[lang_tgt]:
+                # get previous translated value
+                translated_utt = self.tx_cache[lang_tgt][utterance]
+            else:
+                # translate this utterance
+                translated_utt = self.translator.translate(utterance, lang_tgt=lang_tgt, lang_src=lang_src).strip()
+                # save the translation if we need it again
+                self.tx_cache[lang_tgt][utterance] = translated_utt
+            self.log.debug("translated {src} -- {tgt}".format(src=utterance, tgt=translated_utt))
+        else:
+            translated_utt = utterance.strip()
+        return translated_utt
+
+```
+
+NOTE: add ```google_trans_new``` to requirements.txt of your skill
 
 
 ## Replacing skills
