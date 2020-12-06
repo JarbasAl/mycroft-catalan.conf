@@ -2,11 +2,14 @@
 
 Bellow is a in depth step by step guide to configure mycroft in catalan
 
+- [Translating Core](#translating-core)
 - [Translating Skills](#translating-skills)
   * [translate.mycroft.ai](#translatemycroftai)
   * [Exporting Pootle Manually](#exporting-pootle-manually)
   * [Manual translation](#manual-translation)
+    + [vocab / dialogs / locale](#vocab---dialogs---locale)
     + [Resource files](#resource-files)
+    + [Pull Request](#pull-request)
   * [Corner cases](#corner-cases)
   * [Replacing skills](#replacing-skills)
     + [Jokes](#jokes)
@@ -16,6 +19,8 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
 - [Installing plugins](#installing-plugins)
   * [Manual install](#manual-install)
   * [Mycroft-pip](#mycroft-pip)
+  * [From source](#from-source)
+- [Lingua franca](#lingua-franca)
 - [mycroft.conf](#mycroftconf)
   * [Lang](#lang)
     + [Lang Config](#lang-config)
@@ -30,12 +35,23 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
     + [TTS Config](#tts-config)
       - [Installing festival](#installing-festival)
   * [Wake Words](#wake-words)
-      + [Precise 0.3](#precise-03)
-      + [Precise 0.2](#precise-02)
-      + [Wake word - Ey Ordenador](#wake-word---ey-ordenador)
-      + [Standup word - Desperta](#standup-word---desperta)
+    + [Precise 0.3](#precise-03)
+    + [Precise 0.2](#precise-02)
+    + [Wake word - Ey Ordenador](#wake-word---ey-ordenador)
+    + [Standup word - Desperta](#standup-word---desperta)
 - [Final config](#final-config)
 
+
+# Translating Core
+
+There are some files in mycroft-core that need to be translated, these are used mainly for default dialogs
+
+You can find those files at [mycroft-core/mycroft/res/text](https://github.com/MycroftAI/mycroft-core/tree/dev/mycroft/res/text)
+
+- copy the ```en-u```s folder to ```ca-es```
+- translate any files not yet translated
+
+NOTE: mycroft-core resource files have already been translated to catalan, but over time more files might be added
 
 # Translating Skills
 
@@ -75,6 +91,8 @@ cd mycroft-update-translations
 
 ## Manual translation
 
+### vocab / dialogs / locale
+
 TODO
 
 ### Resource files
@@ -111,6 +129,10 @@ wiki.set_lang(data["code"])
 ``` 
 
 if you translated the file above as ```code,ca-es``` the skill will not work, as a translator you have no way to know this without checking the code, so i recommend leaving a comment with link to relevant documentation, as you can see in examples above lines starting with # are ignored
+
+### Pull Request
+
+TODO
 
 ## Corner cases
 
@@ -292,7 +314,9 @@ class MyAlternativeSkill(MycroftSkill):
 
 # Installing plugins
 
-To install a plugin you can use pip, this needs to be inside the mycroft venv!
+This tutorial will use some plugins, in each section you will have the links to these plugins and details on how to configure them
+
+To install a plugin you can use pip, but you need to be inside the mycroft venv!
 
 You can do this in several ways
 
@@ -303,6 +327,7 @@ You can do this in several ways
 - run the script explicitly ```mycroft-core/venv-activate.sh```
 
 then run the install command
+
 ```
 pip install jarbas-stt-plugin-chromium
 ```
@@ -315,6 +340,29 @@ mycroft provides a pip wrapper to do the above for you, this might be or not ava
 - run the script explicitly ```mycroft-core/bin/mycroft-pip install jarbas-stt-plugin-chromium```
 - in a mark1 you will need to use sudo ```sudo mycroft-pip install jarbas-stt-plugin-chromium```
 
+
+## From source
+
+github install from url using pip
+
+```
+mycroft-pip install git+https://github.com/JarbasLingua/jarbas-stt-plugin-chromium
+```
+
+or manually
+```
+git clone https://github.com/JarbasLingua/jarbas-stt-plugin-chromium
+cd jarbas-stt-plugin-chromium
+mycroft-pip install .
+```
+
+# Lingua franca
+
+TODO
+
+- how to translate
+- usage
+- update core to use your fork
 
 # mycroft.conf
 
@@ -402,7 +450,6 @@ once more we need to select an engine that supports catalan, by default mycroft 
 - espeak - needs to be manually installed, very robotic!
 - festival - needs to be manually installed, acceptable quality
 - gtts - can be set from web interface, breaks often (uses google translate undocumented web api)
-- google cloud - best accuracy, not free
 
 ### List of plugins that support catalan
 
