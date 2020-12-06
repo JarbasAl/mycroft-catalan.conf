@@ -46,7 +46,7 @@ Translating skills is not always straighforward, there are many edge cases
 SPECIAL NOTES:
 - any skill with a single file not translated will not load, all files must be translated
 - the language code must match exactly the global config! I submitted a [PR to improve this](https://github.com/MycroftAI/mycroft-core/pull/1335) back in 2017, but it was completely ignored, i closed it (unmerged) after 3 years
-- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work. 
+- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work out of the box. 
 
 ## translate.mycroft.ai
 
