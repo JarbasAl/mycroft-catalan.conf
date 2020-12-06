@@ -16,6 +16,12 @@ Bellow is a step by step guide to configure mycroft in catalan
     + [TTS Config](#tts-config)
       - [Installing festival](#installing-festival)
   * [Final config](#final-config)
+- [Wake Words](#wake-words)
+    + [Precise 0.3](#precise-03)
+    + [Precise 0.2](#precise-02)
+    + [Ey Ordenador](#ey-ordenador)
+    + [Standup word - Desperta](#standup-word---desperta)
+    + [Final config](#final-config-1)
 - [Installing plugins](#installing-plugins)
   * [Manual install](#manual-install)
   * [Mycroft-pip](#mycroft-pip)
@@ -134,7 +140,6 @@ Detailed plugin installation instructions available in [plugins section](#instal
 
 Let's configure mycroft to use festival
 
-
 #### Installing festival
 
 Festival is supported by mycroft-core, but you need to install it manually
@@ -177,6 +182,152 @@ sudo apt-get -y install festival festvox-ca-ona-hts lame
 
 }
 ```
+
+
+# Wake Words
+
+A mycroft wake word is what you need to say to make mycroft start listening
+
+Mycrofts uses [precise](https://github.com/MycroftAI/mycroft-precise) for this, it is a model trained on sounds therefore it does not need "translation", if you want to change the name of mycroft then you need to get 50+ recordings and [train a model](https://mycroft-ai.gitbook.io/docs/using-mycroft-ai/customizations/wake-word#training-a-wake-word-model), some users struggle with training so i recommend you check [Precise Community Repo](https://github.com/MycroftAI/precise-community-data), if you upload your recordings the community will train a model for you! This also means the model will keep improving over time
+
+There are two wake words we need to configure, the "name" of mycroft, and the stand up word "wake up"  (more info on this bellow)
+
+### Precise 0.3
+
+Mycroft downloads the [precise binary](https://github.com/MycroftAI/precise-data/tree/dist) at runtime, there is version 0.2 and 0.3, by default it uses 0.2 but some models are trained on 0.3 (github version)
+
+```json
+ "precise": {
+   "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest-dev"
+ }
+```
+
+### Precise 0.2
+
+If you want to revert to version 0.2
+
+```json
+ "precise": {
+   "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest"
+ }
+```
+
+### Ey Ordenador
+
+For this example we will use a community model, [Ey Ordenador](https://github.com/MycroftAI/Precise-Community-Data/tree/master/heycomputer/es)
+
+Download the model from [here](https://github.com/MycroftAI/Precise-Community-Data/blob/master/heycomputer/models/heycomputer-es-0.3.0-20190815-eltocino.tar.gz) amd extract the files to ```~/.mycroft/precise/models``` (or any other location of your choice)
+
+You can change 2 parameters to improve detection with your voice
+-  ```sensitivity``` Higher = more sensitive
+-  ```trigger_level``` Higher = more delay & less sensitive
+
+
+```json
+  "listener": {
+      "wake_word": "ey_ordenador"
+  },
+  "hotwords": {
+    "ey_ordenador": {
+        "module": "precise",
+        "local_model_file": "~/.mycroft/precise/models/hey-computer-es.pb",
+        "sensitivity": 0.5, 
+        "trigger_level": 3  
+        }
+  }
+```
+
+### Standup word - Desperta
+
+If you use the [naptime skill](https://github.com/MycroftAI/skill-naptime) you can tell mycroft to "go to sleep", when you do this STT will NOT be processed, this is a privacy feature
+
+But the implication of this is that you must translate this wake word, by default it is in english "wake up"
+
+SPECIAL NOTES: 
+- when sleeping mycroft will still react to the wake-word but instead of STT it will listen for the standup word
+- you must say "hey mycroft, wake up" to activate STT again
+- since this requires 2 wake words in a row, the sensitivity of "wake up" can be lower and more false activations are acceptable
+
+To translate this to catalan we will use the [snowboy plugin](https://github.com/JarbasLingua/jarbas-wake-word-plugin-snowboy):
+- it is very lightweight
+- multiple models can be loaded at once
+- you can [train a personal model](https://snowboy.kitt.ai/) for each person in your house
+- unfortunately snowboy is shutting down on December 31st 2020, train models while you can!!!
+
+Install the plugin with
+
+```bash
+mycroft-pip install jarbas-wake-word-plugin-snowboy
+```
+
+Now lets configure mycroft to use this
+
+```json
+ "listener": {
+      "stand_up_word": "desperta"
+  },
+  "hotwords": {
+    "desperta": {
+        "module": "snowboy_ww_plug",
+        "models": [
+            {"sensitivity": 0.5, "model_path": "path/to/first_person.pmdl"},
+            {"sensitivity": 0.5, "model_path": "path/to/second_person.pmdl"},
+            {"sensitivity": 0.5, "model_path": "path/to/third_person.pmdl"}
+         ]
+    }
+  }
+```
+
+If you have not trained a model do not worry, [@jmontane](https://github.com/jmontane) and XXX trained some models which are included in the plugin and should work ok! be sure to adjust sensitivities
+
+TODO - finish this section, models not yet ready
+
+```json
+  "listener": {
+      "stand_up_word": "desperta"
+  },
+  "hotwords": {
+    "desperta": {
+        "module": "snowboy_ww_plug",
+        "models": [
+            {"sensitivity": 0.5, "model_path": "desperta_jmontane.pmdl"},
+            {"sensitivity": 0.5, "model_path": "desperta_XXX.pmdl"},
+            {"sensitivity": 0.5, "model_path": "desperta_YYY.pmdl"}
+         ]
+    }
+  }
+```
+
+### Final config
+
+Now you can wake up mycroft in catalan! "ey ordenador, desperta"
+
+```json
+ "listener": {
+      "wake_word": "ey_ordenador",   
+      "stand_up_word": "desperta"
+  },
+ "precise": {
+   "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest-dev"
+ },
+  "hotwords": {
+    "ey_ordenador": {
+        "module": "precise",
+        "local_model_file": "~/.mycroft/precise/models/hey-computer-es.pb",
+        "sensitivity": 0.5,  
+        "trigger_level": 3 
+        },
+     "desperta": {
+        "module": "snowboy_ww_plug",
+        "models": [
+            {"sensitivity": 0.5, "model_path": "desperta_jmontane.pmdl"},
+            {"sensitivity": 0.5, "model_path": "desperta_XXX.pmdl"},
+            {"sensitivity": 0.5, "model_path": "desperta_YYY.pmdl"}
+         ]
+    }
+  }
+```
+
 # Installing plugins
 
 To install a plugin you can use pip, this needs to be inside the mycroft venv!
