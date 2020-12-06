@@ -585,9 +585,8 @@ Now lets configure mycroft to use this
   }
 ```
 
-If you have not trained a model do not worry, [@jmontane](https://github.com/jmontane) and XXX trained some models which are included in the plugin and should work ok! be sure to adjust sensitivities
+If you have not trained a model do not worry, [@jmontane](https://github.com/jmontane) trained some models which are included in the plugin and should work ok! be sure to adjust sensitivities
 
-TODO - finish this section, models not yet ready
 
 ```json
   "listener": {
@@ -597,9 +596,8 @@ TODO - finish this section, models not yet ready
     "desperta": {
         "module": "snowboy_ww_plug",
         "models": [
-            {"sensitivity": 0.5, "model_path": "desperta_jmontane.pmdl"},
-            {"sensitivity": 0.5, "model_path": "desperta_XXX.pmdl"},
-            {"sensitivity": 0.5, "model_path": "desperta_YYY.pmdl"}
+           {"sensitivity": 0.5, "model_path": "desperta_jm.pmdl"},
+           {"sensitivity": 0.5, "model_path": "desperta_jm2.pmdl"}
          ]
     }
   }
