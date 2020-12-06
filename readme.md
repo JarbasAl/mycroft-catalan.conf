@@ -15,13 +15,12 @@ Bellow is a step by step guide to configure mycroft in catalan
     + [List of plugins that support catalan](#list-of-plugins-that-support-catalan-1)
     + [TTS Config](#tts-config)
       - [Installing festival](#installing-festival)
+  * [Wake Words](#wake-words)
+      + [Precise 0.3](#precise-03)
+      + [Precise 0.2](#precise-02)
+      + [Ey Ordenador](#ey-ordenador)
+      + [Standup word - Desperta](#standup-word---desperta)
   * [Final config](#final-config)
-- [Wake Words](#wake-words)
-    + [Precise 0.3](#precise-03)
-    + [Precise 0.2](#precise-02)
-    + [Ey Ordenador](#ey-ordenador)
-    + [Standup word - Desperta](#standup-word---desperta)
-    + [Final config](#final-config-1)
 - [Installing plugins](#installing-plugins)
   * [Manual install](#manual-install)
   * [Mycroft-pip](#mycroft-pip)
@@ -161,29 +160,6 @@ sudo apt-get -y install festival festvox-ca-ona-hts lame
 }
 ```
 
-## Final config
-
-```json
-{
-  "lang": "ca-es",
-   "stt": {
-      "module": "chromium_stt_plug",
-      "chromium_stt_plug": {
-          "lang": "ca-ES"
-      }
-   },
-   "tts": {
-      "module": "festival",
-      "festival": {
-          "lang": "catalan",
-          "encoding": "ISO-8859-15//TRANSLIT"
-      }
-   }
-
-}
-```
-
-
 # Wake Words
 
 A mycroft wake word is what you need to say to make mycroft start listening
@@ -298,18 +274,38 @@ TODO - finish this section, models not yet ready
   }
 ```
 
-### Final config
 
 Now you can wake up mycroft in catalan! "ey ordenador, desperta"
 
+
+## Final config
+
+This was a long tutorial, but if you following everything your .conf should look like this
+
+
 ```json
- "listener": {
+{
+  "lang": "ca-es",
+  "stt": {
+      "module": "chromium_stt_plug",
+      "chromium_stt_plug": {
+          "lang": "ca-ES"
+      }
+   },
+  "tts": {
+      "module": "festival",
+      "festival": {
+          "lang": "catalan",
+          "encoding": "ISO-8859-15//TRANSLIT"
+      }
+   },
+  "listener": {
       "wake_word": "ey_ordenador",   
       "stand_up_word": "desperta"
   },
- "precise": {
+  "precise": {
    "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest-dev"
- },
+  },
   "hotwords": {
     "ey_ordenador": {
         "module": "precise",
@@ -325,8 +321,11 @@ Now you can wake up mycroft in catalan! "ey ordenador, desperta"
             {"sensitivity": 0.5, "model_path": "desperta_YYY.pmdl"}
          ]
     }
-  }
+}
 ```
+
+
+
 
 # Installing plugins
 
