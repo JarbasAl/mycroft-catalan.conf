@@ -23,12 +23,14 @@ Bellow is a step by step guide to configure mycroft in catalan
   * [translate.mycroft.ai](#translatemycroftai)
   * [Exporting Pootle Manually](#exporting-pootle-manually)
   * [Manual translation](#manual-translation)
+    + [Resource files](#resource-files)
   * [Corner cases](#corner-cases)
   * [Replacing skills](#replacing-skills)
-    + [News skill](#news-skill)
     + [Jokes](#jokes)
-    + [Wikipedia](#wikipedia)
+    + [News skill](#news-skill)
+      - [Configuring audio backend](#configuring-audio-backend)
     + [blacklist official skills](#blacklist-official-skills)
+
 
 
 # mycroft.conf
@@ -285,6 +287,17 @@ A possible work around is using translation at runtime, see [wolfram alpha skill
 
 ## Replacing skills
 
+
+### Jokes
+
+the official jokes skill does not have jokes in catalan, you can trigger it (resource files have been translated) but it will not work correcly, it should be blacklisted to avoid conflicts
+
+You can use my alternative skill, [skill-icanhazdadjoke](https://github.com/JarbasSkills/skill-icanhazdadjoke), using the [icanhazdadjoke.com/](https://icanhazdadjoke.com/) API, it will blacklist the default skill automatically and supports all languages (via google translate)
+
+```
+msm install https://github.com/JarbasSkills/skill-icanhazdadjoke
+```
+
 ### News skill
 
 To support catalan we need to find a news provider for Catalonia
@@ -293,11 +306,11 @@ To support catalan we need to find a news provider for Catalonia
 
 You can install [skill-news](https://github.com/JarbasLingua/skill-news), it will blacklist the default skill automatically and already supports catalan
 
+NOTE: this is temporary, once mycroft supports this i will deprecate this skill, but i intend to do this gracefully and whitelist the original again automatically, no action needed from your part
 
 ```
 msm install https://github.com/JarbasLingua/skill-news
 ```
-
 
 #### Configuring audio backend
 
@@ -320,16 +333,6 @@ edit your .conf and add the following
   }
 ```
 
-### Jokes
-
-the official jokes skill does not have jokes in catalan, you can trigger it (resource files have been translated) but it will not work correcly, it should be blacklisted to avoid conflicts
-You can https://github.com/JarbasSkills/skill-icanhazdadjoke
-
-You can use my alternative skill, [skill-icanhazdadjoke](https://github.com/JarbasSkills/skill-icanhazdadjoke), using the [icanhazdadjoke.com/](https://icanhazdadjoke.com/) API, it will blacklist the default skill automatically and supports all languages (via google translate)
-
-```
-msm install https://github.com/JarbasSkills/skill-icanhazdadjoke
-```
 
 ### blacklist official skills
 
