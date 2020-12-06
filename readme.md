@@ -1,6 +1,6 @@
 # Mycroft in catalan
 
-Bellow is a step by step guide to configure mycroft in catalan
+Bellow is a in depth step by step guide to configure mycroft in catalan
 
 - [Translating Skills](#translating-skills)
   * [translate.mycroft.ai](#translatemycroftai)
@@ -29,16 +29,19 @@ Bellow is a step by step guide to configure mycroft in catalan
     + [List of plugins that support catalan](#list-of-plugins-that-support-catalan-1)
     + [TTS Config](#tts-config)
       - [Installing festival](#installing-festival)
-  * [Wake Words](#wake-words)
-      + [Precise 0.3](#precise-03)
-      + [Precise 0.2](#precise-02)
-      + [Ey Ordenador](#ey-ordenador)
-      + [Standup word - Desperta](#standup-word---desperta)
+- [Wake Words](#wake-words)
+    + [Precise 0.3](#precise-03)
+    + [Precise 0.2](#precise-02)
+    + [Wake word - Ey Ordenador](#wake-word---ey-ordenador)
+    + [Standup word - Desperta](#standup-word---desperta)
   * [Final config](#final-config)
+
 
 # Translating Skills
 
-Translating skills is not straighforward, there are many edge cases
+The first thing you should do is translate skills, otherwise even if mycroft understands you he will just speak error messages since it won't know how to do anything
+
+Translating skills is not always straighforward, there are many edge cases
 
 SPECIAL NOTES:
 - any skill with a single file not translated will not load, all files must be translated
@@ -402,7 +405,7 @@ If you want to revert to version 0.2
  }
 ```
 
-### Ey Ordenador
+### Wake word - Ey Ordenador
 
 For this example we will use a community model, [Ey Ordenador](https://github.com/MycroftAI/Precise-Community-Data/tree/master/heycomputer/es)
 
