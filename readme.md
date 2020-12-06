@@ -163,6 +163,7 @@ sudo apt-get -y install festival festvox-ca-ona-hts lame
       "module": "chromium_stt_plug",
       "chromium_stt_plug": {
           "lang": "ca-ES"
+      }
    },
    "tts": {
       "module": "festival",
@@ -292,6 +293,12 @@ To support catalan we need to find a news provider for Catalonia
 
 You can install [skill-news](https://github.com/JarbasLingua/skill-news), it will blacklist the default skill automatically and already supports catalan
 
+
+```
+msm install https://github.com/JarbasLingua/skill-news
+```
+
+
 #### Configuring audio backend
 
 By default mycroft uses a simple audio backend that has issues with http streams, we need to make mycroft use vlc instead, this will also allow many other skills to also work
@@ -320,12 +327,9 @@ You can https://github.com/JarbasSkills/skill-icanhazdadjoke
 
 You can use my alternative skill, [skill-icanhazdadjoke](https://github.com/JarbasSkills/skill-icanhazdadjoke), using the [icanhazdadjoke.com/](https://icanhazdadjoke.com/) API, it will blacklist the default skill automatically and supports all languages (via google translate)
 
-
-### Wikipedia
-
-The official skill is supposed to support other languages, it uses the `translate_namedvalues` method described above, however there have been reports in the chat that the official skill was not working properly for catalan, i have not tested this
-
-You can use my alternative skill, [wikipedia-for-humans skill](https://github.com/JarbasSkills/skill-wikipedia-for-humans), using the [wikipedia_for_humans](https://github.com/HelloChatterbox/wikipedia_for_humans) package from [chatterbox](https://hellochatterbox.com), it will blacklist the default skill automatically and already supports catalan
+```
+msm install https://github.com/JarbasSkills/skill-icanhazdadjoke
+```
 
 ### blacklist official skills
 
