@@ -558,7 +558,11 @@ Mycrofts uses [precise](https://github.com/MycroftAI/mycroft-precise) for this, 
 
 Some users struggle with training so i recommend you check [Precise Community Repo](https://github.com/MycroftAI/precise-community-data), if you upload your recordings the community will train a model for you! This also means the model will keep improving over time
 
-There are two wake words we need to configure, the "name" of mycroft, and the stand up word "wake up"  (more info on this bellow)
+Keep in the mind the quality of the wake word will depend a lot on the ammout of data used for training
+
+- 20-200 samples - this will work well for personal models, the voices in the training data will be recognized well
+- 200-2000 samples - this should work quite well for most voices and different microphones!
+- 2000+ samples - the model can't get much better than this, from this point on you want to balance the dataset, try to include the same number of female / male / children voices. Different accents are also worth exploring
 
 ### Precise 0.3
 
