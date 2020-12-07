@@ -12,10 +12,6 @@ Nota: aquest document és una traducció de l'original en anglès que podeu cons
     + [Fitxers de recursos](#fitxers-de-recursos)
     + [Sol·licitud d'entrada (pull request)](#sollicitud-dentrada-pull-request)
   * [Casos especials](#casos-especials)
-  * [Substitució d'habilitats](#substitució-dhabilitats)
-    + [Habilitat de bromes (jokes)](#habilitat-de-bromes--jokes-)
-    + [Habilitat de notícies](#habilitat-de-notícies)
-      - [Configuració del motor d'àudio](#configuració-del-motor-dàudio)
     + [Desactivació d'habilitats oficials](#desactivació-dhabilitats-oficials)
 - [Instal·lació d'extensions (plugins)](#installació-dextensions-plugins)
   * [Instal·lació manual](#installació-manual)
@@ -35,12 +31,18 @@ Nota: aquest document és una traducció de l'original en anglès que podeu cons
     + [Llista d'extensions que admeten el català](#llista-dextensions-que-admeten-el-català-1)
     + [Configuració del motor TTS](#configuració-del-motor-tts)
       - [Instal·lació de festival](#installació-de-festival)
+    + [Paraula despertadora (stand up) - Desperta](#paraula-despertadora-stand-up---desperta)
+- [Configuració final](#configuració-final)
+- [Ajustaments addicionals](#ajustaments-addiconals)
   * [Paraules d'activació (wake words)](#paraules-dactivació-wake-words)
     + [Precise 0.3](#precise-03)
     + [Precise 0.2](#precise-02)
     + [Paraula d'activació - Ei ordinador](#paraula-dactivació---ei-ordinador)
-    + [Paraula despertadora (stand up) - Desperta](#paraula-despertadora-stand-up---desperta)
-- [Configuració final](#configuració-final)
+  * [Substitució d'habilitats](#substitució-dhabilitats)
+    + [Habilitat de bromes (jokes)](#habilitat-de-bromes--jokes-)
+    + [Habilitat de notícies](#habilitat-de-notícies)
+      - [Configuració del motor d'àudio](#configuració-del-motor-dàudio)
+
 
 
 # Traducció del nucli (core)
@@ -49,21 +51,20 @@ Cal traduir alguns fitxers de mycroft-core. Aquests fitxers s'utilitzen principa
 
 Podeu trobar aquests fitxers a [mycroft-core/mycroft/res/text](https://github.com/MycroftAI/mycroft-core/tree/dev/mycroft/res/text)
 
-- Copieu la carpeta ```en-us``` a  ```ca-es```
-- Traduïu qualsevol fitxer que encara no estigui traduït
+- Copieu la carpeta ```en-us``` a  ```ca-es```.
+- Traduïu qualsevol fitxer que encara no estigui traduït.
 
 NOTA: Els fitxers de recursos de mycroft-core ja es van traduir al català, però amb el temps és possible que s'hagin creat fitxers nous o hagin canviat els anteriors i ara calgui fer o actualitzar-ne la traducció.
 
 # Traducció de les habilitats (skills)
 
-El primer que hauríeu de fer és traduir habilitats, altrament encara que Mycroft us entengui, només us respondrà missatge d'error perquè no sabrà què ha de fer.
+El primer que hauríeu de fer és traduir les habilitats. Altrament, encara que Mycroft us entengui, només us respondrà missatge d'error perquè no sabrà què ha de fer.
 
 La traducció d'habilitats de vegades no és senzilla, hi ha molts casos especials.
 
 NOTES ESPECILAS:
-- Qualsevol habilitat que tingui un fitxer sense traduir no es carregara. Cal que tots els fitxers estiguin traduïts.
+- Qualsevol habilitat que tingui un fitxer sense traduir no es carregarà. Cal que tots els fitxers estiguin traduïts.
 - El codi de llengua ha de coincidir de forma exacta amb el valor global configurat! Vaig enviar una [PR per a millorar-ho](https://github.com/MycroftAI/mycroft-core/pull/1335) l'any 2017, però fou ignorada completament, i la vaig tancar (sense fusionar) després de 3 anys.
-- El portal de traducció de Mycroft usa el codi de llengua ```ca```, en comptes de ```ca-es```, això significa que les habilitats traduïdes a [translate.mycroft.ai](https://translate.mycroft.ai/) no funcionaran de sèrie. 
 
 ## translate.mycroft.ai
 
@@ -71,26 +72,38 @@ La millor manera de traduir habilitats és usant la plataforma de traducció de 
 
 Després cal que espereu que Mycroft (l'empresa) enviï les traduccions als repositoris de les habilitats.
 
-En el cas del català hi ha un problema, perquè la plataforma de traducció usa el codi de llengua  ```ca``` en comptes de ```ca-es```. Vegueu més avall alguna solució.
-
 ## Exportació manual des de Pootle
 
-Com s'ha indicat més amunt, les habilitats traduïdes a [translate.mycroft.ai](https://translate.mycroft.ai/) no funcionaran perquè usen el codi de llengua ```ca```. Però podeu un script personalitzat per a exportar les cadenes del Pootle i posar-les amb el codi de llengua ```ca-es```.
+Per a les habilitats que es tradueixen a [translate.mycroft.ai](https://translate.mycroft.ai/), cal que l'equip de Mycroft sincronitzi manualment les traduccions amb els repositoris de codi font. Però podeu usar un script personalitzat per a exportar les cadenes del Pootle si no voleu esperar!
 
-Simplement:
-- Cloneu el repositori [mycroft-update-translations](https://github.com/jmontane/mycroft-update-translations) en una carpeta de treball
+Cloneu el repositori [mycroft-update-translations](https://github.com/jmontane/mycroft-update-translations) en una carpeta de treball i executeu l'script:
 ```
 git clone https://github.com/jmontane/mycroft-update-translations
-```
-- Si cal, editeu el fitxer mycroft-update-translations.py i canvieu-ne els paràmetres. Per defecte, tradueix les habilitats de la carpeta ```/opt/mycroft/skills/```
-
-- Executeu l'script
-```
 cd mycroft-update-translations
 ./mycroft-update-translations
 ```
 
+Nota: actualment aquest script no accepta paràmetres en la línia d'ordres. Està preconfigurat per al català. Si cal, editeu el fitxer mycroft-update-translations.py i canvieu-ne els paràmetres. Per defecte, tradueix les habilitats de la carpeta ```/opt/mycroft/skills/```. Si voleu traduir una altra llengua o heu canviat el ```data_dir``` del fitxer ```mycroft.conf```, cal que editeu aquest fitxer.
+
+
 ## Traducció manual
+
+Si la vostra habilitat no és a la botiga, cal que la traduïu manualmennt, perquè no hi serà en la plataforma de traducció.
+
+### Començament
+És molt més fàcil començar traduccions si ja teniu fitxer per traduir, en comptes d'haver-los de crear un per un.
+
+Podeu usar un script de @jmontane per a copiar els recursos de llengua d'una altra llengua, habitualment ```en-us``` (la llengua predeterminada per a la majoria d'habilitats) i després traduir els fitxers copiats. Altres vegades potser tindrà sentit copiar d'una altre llengua, per exemple de ```pt-br``` a ```pt-pt``` o ```es-es``` a  ```gl-es```.
+
+Cloneu el repositori [mycroft-copy-translations](https://github.com/jmontane/mycroft-copy-translations) i executeu l'script
+
+```
+git clone https://github.com/jmontane/mycroft-copy-translations
+cd mycroft-copy-translations
+./mycroft-copy-translations
+```
+
+NOTA: actualment aquest script no accepta paràmetres en la línia d'ordres. Si cal, editeu el fitxer mycroft-copy-translations.py i canvieu-ne els paràmetres. Està preconfigurat per al català i de forma predeterminada s'aplica a les habilitats de la carpeta ```/opt/mycroft/skills/```. Si voleu copiar una llengua diferent o heu canviat el paràmetre ```data_dir```  del ```mycroft.conf```, cal que editeu aquest fitxer.
 
 ### Codi de llengua (locale)
 
@@ -202,56 +215,6 @@ class MySkill(MycroftSkill):
 ```
 
 NOTE: afegiu ```google_trans_new``` al fitxer requirements.txt de la vostra habilitat.
-
-
-## Substitució d'habilitats
-
-
-### Habilitat de bromes (jokes)
-
-L'habilitat oficial jokes encara no té bromes en català, podeu activar l'habilitat (perquè els fitxers s'han traduït), però no funcionarà correctament, hauríeu de blocar-la  per a evitar conflictes.
-
-Podeu usar l'habilitat alternativa, [skill-icanhazdadjoke](https://github.com/JarbasSkills/skill-icanhazdadjoke), que usa l'API de [icanhazdadjoke.com/](https://icanhazdadjoke.com/), blocarà l'habilitat predeterminada automàtica i admet moltes llengües (mitjançant el traductor de Google).
-
-```
-msm install https://github.com/JarbasSkills/skill-icanhazdadjoke
-```
-
-### Habilitat de notícies
-
-Per a funcionar en català ens cal trobar un proveïdor de notícies en català.
-
-[Aquesta sol·licitud d'entrada](https://github.com/MycroftAI/skill-npr-news/pull/102) afegeix [CCMA Catalunya Informació](https://www.ccma.cat/catradio/directe/catalunya-informacio/), però està aturada per un error en el motor de Mycroft.
-
-Podeu instal·lar l'habilitat [skill-news](https://github.com/JarbasLingua/skill-news), blocarà l'habilitat predeterminada i ja admet el català.
-
-NOTA: això és temporal, quan Mcyroft corregeixi el problema retiraré aquesta habilitat, però intentaré fer-ho de forma transparent, desblocant l'habilitat de notícies predeterminada, no caldrà que feu res.
-
-```
-msm install https://github.com/JarbasLingua/skill-news
-```
-
-#### Configuració del motor d'àudio
-
-De forma predeterminada, Mycroft usa un motor d'àudio simple que té alguns problemes amb fluxos http. Ens cal que Mycroft usi el motor ```vlc```, a més, això permetrà que altres habilitats funcionin correctament.
-
-```
-sudo apt-get install vlc
-```
-
-Editeu el vostre fitxer ```mycroft.conf``` i afegiu-hi el següent:
-
-```
-  "Audio": {
-    "backends": {
-      "vlc": {
-        "active": true
-      }
-    },
-    "default-backend": "vlc"
-  }
-```
-
 
 ### Desactivació d'habilitats oficials
 
@@ -487,61 +450,7 @@ sudo apt-get -y install festival festvox-ca-ona-hts lame
 }
 ```
 
-## Paraules d'activació (wake words)
-
-Una paraula d'activació és el que heu de dir perquè Mycroft comenci a escoltar.
-
-Mycroft usa el motor [precise](https://github.com/MycroftAI/mycroft-precise) per a fer això. És un model entrenat amb sons, per tant no requereix una "traducció". Si voleu canviar el nom de Mycroft aleshores cal que feu més de 50 enregistraments i [entreneu un model](https://mycroft-ai.gitbook.io/docs/using-mycroft-ai/customizations/wake-word#training-a-wake-word-model)
-
-Alguns usuaris tenen traça amb l'entreament de models, per tant us recomano de revisar el [repositori comuntari de Precise](https://github.com/MycroftAI/precise-community-data), si hi pugeu els enregistraments la comunitat us entrenarà un model! Això també significa que el model millorarà amb el temps.
-
-Hi ha dues paraules d'activació que cal configurar. El "nom" de Mycroft, i la paraula despertadora "desperta" (teniu més informació sobre això més avall)
-
-### Precise 0.3
-
-Mycroft baixa el [binari de precise](https://github.com/MycroftAI/precise-data/tree/dist) en temps d'execució. Hi ha la versió 0.2 i la 0.3. Per defecte Mycroft usa la versió 0.2, però alguns models estan entrenats per a la 0.3 (la versió de github)
-
-```
- "precise": {
-   "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest-dev"
- }
-```
-
-### Precise 0.2
-Si voleu tornar a la versió 0.2
-
-```
- "precise": {
-   "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest"
- }
-```
-
-### Paraula d'activació - Ei ordinador
-
-Per a aquest exemple farem servir un model comunitari, [Ey Ordenador](https://github.com/MycroftAI/Precise-Community-Data/tree/master/heycomputer/es)
-
-Baixeu el model d'[aquí](https://github.com/MycroftAI/Precise-Community-Data/blob/master/heycomputer/models/heycomputer-es-0.3.0-20190815-eltocino.tar.gz) i descomprimiu els fitxers a ```~/.mycroft/precise/models``` (o a qualsevol altra ubicació que vulgueu)
-
-Podeu canviar 2 paràmetres per a millorar la detecció amb la vostra veu
--  ```sensitivity``` Més alt -> més precisió
--  ```trigger_level``` Més alt -> més retard i menys sensible
-
-
-```
-  "listener": {
-      "wake_word": "ey_ordenador"
-  },
-  "hotwords": {
-    "ey_ordenador": {
-        "module": "precise",
-        "local_model_file": "~/.mycroft/precise/models/hey-computer-es.pb",
-        "sensitivity": 0.5, 
-        "trigger_level": 3  
-        }
-  }
-```
-
-### Paraula despertadora (stand up) - Desperta
+## Paraula despertadora (stand up) - Desperta
 
 Si useu l'habilitat [naptime skill](https://github.com/MycroftAI/skill-naptime) podeu dir al Mycroft "vés a dormir", si ho feu, no es processa el reconeixement de la parla STT. Això és una funcionalitat de privadesa.
 
@@ -576,9 +485,9 @@ Ara configurem Mycroft perquè usi això:
     "desperta": {
         "module": "snowboy_ww_plug",
         "models": [
-            {"sensitivity": 0.5, "model_path": "path/to/first_person.pmdl"},
-            {"sensitivity": 0.5, "model_path": "path/to/second_person.pmdl"},
-            {"sensitivity": 0.5, "model_path": "path/to/third_person.pmdl"}
+            {"sensitivity": 0.5, "model_path": "camí/a/model_persona_1.pmdl"},
+            {"sensitivity": 0.5, "model_path": "camí/a/model_persona_2.pmdl"},
+            {"sensitivity": 0.5, "model_path": "camí/a/model_persona_2.pmdl"}
          ]
     }
   }
@@ -602,7 +511,7 @@ Si no heu entrenat un model, no patiu, [@jmontane](https://github.com/jmontane) 
 ```
 
 
-Ara podeu activar el Mycroft en català! "ei ordinador, desperta"
+Ara podeu activar el Mycroft en català! "ei mycroft, desperta"
 
 
 # Configuració final
@@ -634,29 +543,119 @@ Aquest ha estat un tutorial força llarg, però si heu seguit totes les instrucc
     ]
   },
   "listener": {
-      "wake_word": "ey_ordenador",   
       "stand_up_word": "desperta"
   },
-  "precise": {
+  "hotwords": {
+     "desperta": {
+        "module": "snowboy_ww_plug",
+        "models": [
+            {"sensitivity": 0.5, "model_path": "desperta_jm.pmdl"},
+           {"sensitivity": 0.5, "model_path": "desperta_jm2.pmdl"}
+         ]
+      }
+   }
+}
+
+```
+# Ajustaments addicionals
+## Paraules d'activació
+
+
+## Paraules d'activació (wake words)
+
+Una paraula d'activació és el que heu de dir perquè Mycroft comenci a escoltar.
+
+Mycroft usa el motor [precise](https://github.com/MycroftAI/mycroft-precise) per a fer això. És un model entrenat amb sons, per tant no requereix una "traducció". Si voleu canviar el nom de Mycroft aleshores cal que feu més de 50 enregistraments i [entreneu un model](https://mycroft-ai.gitbook.io/docs/using-mycroft-ai/customizations/wake-word#training-a-wake-word-model)
+
+Alguns usuaris tenen traça amb l'entreament de models, per tant us recomano de revisar el [repositori comuntari de Precise](https://github.com/MycroftAI/precise-community-data), si hi pugeu els enregistraments la comunitat us entrenarà un model! Això també significa que el model millorarà amb el temps.
+
+Hi ha dues paraules d'activació que cal configurar. El "nom" de Mycroft, i la paraula despertadora "desperta" (teniu més informació sobre això més avall)
+
+### Precise 0.3
+
+Mycroft baixa el [binari de precise](https://github.com/MycroftAI/precise-data/tree/dist) en temps d'execució. Hi ha la versió 0.2 i la 0.3. Per defecte Mycroft usa la versió 0.2, però alguns models estan entrenats per a la 0.3 (la versió de github)
+
+```
+ "precise": {
    "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest-dev"
+ }
+```
+
+### Precise 0.2
+Si voleu tornar a la versió 0.2
+
+```
+ "precise": {
+   "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest"
+ }
+```
+
+### Paraula d'activació - Ey ordenador
+
+Podem canviar la forma amb que activem Mycroft.
+
+Per a aquest exemple farem servir un model comunitari, [Ey Ordenador](https://github.com/MycroftAI/Precise-Community-Data/tree/master/heycomputer/es), que funciona prou bé en català si diem "ei ordinador"
+
+Baixeu el model d'[aquí](https://github.com/MycroftAI/Precise-Community-Data/blob/master/heycomputer/models/heycomputer-es-0.3.0-20190815-eltocino.tar.gz) i descomprimiu els fitxers a ```~/.mycroft/precise/models``` (o a qualsevol altra ubicació que vulgueu)
+
+Podeu canviar 2 paràmetres per a millorar la detecció amb la vostra veu
+-  ```sensitivity``` Més alt -> més precisió
+-  ```trigger_level``` Més alt -> més retard i menys sensible
+
+
+```
+  "listener": {
+      "wake_word": "ey_ordenador"
   },
   "hotwords": {
     "ey_ordenador": {
         "module": "precise",
         "local_model_file": "~/.mycroft/precise/models/hey-computer-es.pb",
-        "sensitivity": 0.5,  
-        "trigger_level": 3 
-        },
-     "desperta": {
-        "module": "snowboy_ww_plug",
-        "models": [
-            {"sensitivity": 0.5, "model_path": "desperta_jmontane.pmdl"},
-            {"sensitivity": 0.5, "model_path": "desperta_XXX.pmdl"},
-            {"sensitivity": 0.5, "model_path": "desperta_YYY.pmdl"}
-         ]
-      }
-   },
-   "Audio": {
+        "sensitivity": 0.5, 
+        "trigger_level": 3  
+        }
+  }
+```
+
+# Substitució d'habilitats
+De vegades ens interessarà substituir una aplacació oficial per una altra d'alternativa que funciona millor en català. 
+
+### Habilitat de bromes (jokes)
+
+L'habilitat oficial jokes encara no té bromes en català, podeu activar l'habilitat (perquè els fitxers s'han traduït), però no funcionarà correctament, hauríeu de blocar-la  per a evitar conflictes.
+
+Podeu usar l'habilitat alternativa, [skill-icanhazdadjoke](https://github.com/JarbasSkills/skill-icanhazdadjoke), que usa l'API de [icanhazdadjoke.com/](https://icanhazdadjoke.com/), blocarà l'habilitat predeterminada automàtica i admet moltes llengües (mitjançant el traductor de Google).
+
+```
+msm install https://github.com/JarbasSkills/skill-icanhazdadjoke
+```
+
+### Habilitat de notícies
+
+Per a funcionar en català ens cal trobar un proveïdor de notícies en català.
+
+[Aquesta sol·licitud d'entrada](https://github.com/MycroftAI/skill-npr-news/pull/102) afegeix [CCMA Catalunya Informació](https://www.ccma.cat/catradio/directe/catalunya-informacio/), però està aturada per un error en el motor de Mycroft.
+
+Podeu instal·lar l'habilitat [skill-news](https://github.com/JarbasLingua/skill-news), blocarà l'habilitat predeterminada i ja admet el català.
+
+NOTA: això és temporal, quan Mcyroft corregeixi el problema retiraré aquesta habilitat, però intentaré fer-ho de forma transparent, desblocant l'habilitat de notícies predeterminada, no caldrà que feu res.
+
+```
+msm install https://github.com/JarbasLingua/skill-news
+```
+
+#### Configuració del motor d'àudio
+
+De forma predeterminada, Mycroft usa un motor d'àudio simple que té alguns problemes amb fluxos http. Ens cal que Mycroft usi el motor ```vlc```, a més, això permetrà que altres habilitats funcionin correctament.
+
+```
+sudo apt-get install vlc
+```
+
+Editeu el vostre fitxer ```mycroft.conf``` i afegiu-hi el següent:
+
+```
+  "Audio": {
     "backends": {
       "vlc": {
         "active": true
@@ -664,6 +663,6 @@ Aquest ha estat un tutorial força llarg, però si heu seguit totes les instrucc
     },
     "default-backend": "vlc"
   }
-}
 ```
+
 
