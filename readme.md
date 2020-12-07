@@ -7,14 +7,11 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
   * [translate.mycroft.ai](#translatemycroftai)
   * [Exporting Pootle Manually](#exporting-pootle-manually)
   * [Manual translation](#manual-translation)
+    + [bootstrapping](#bootstrapping)
     + [locale](#locale)
     + [Resource files](#resource-files)
     + [Pull Request](#pull-request)
   * [Corner cases](#corner-cases)
-  * [Replacing skills](#replacing-skills)
-    + [Jokes](#jokes)
-    + [News skill](#news-skill)
-      - [Configuring audio backend](#configuring-audio-backend)
     + [blacklist official skills](#blacklist-official-skills)
 - [Installing plugins](#installing-plugins)
   * [Manual install](#manual-install)
@@ -34,13 +31,17 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
     + [List of plugins that support catalan](#list-of-plugins-that-support-catalan-1)
     + [TTS Config](#tts-config)
       - [Installing festival](#installing-festival)
+  * [Standup word - Desperta](#standup-word---desperta)
+  * [Final config](#final-config)
+- [Additional tweaks](#additional-tweaks)
   * [Wake Words](#wake-words)
     + [Precise 0.3](#precise-03)
     + [Precise 0.2](#precise-02)
     + [Wake word - Ey Ordenador](#wake-word---ey-ordenador)
-    + [Standup word - Desperta](#standup-word---desperta)
-- [Final config](#final-config)
-
+  * [Replacing skills](#replacing-skills)
+    + [Jokes](#jokes)
+    + [News skill](#news-skill)
+      - [Configuring audio backend](#configuring-audio-backend)
 
 # Translating Core
 
@@ -48,7 +49,7 @@ There are some files in mycroft-core that need to be translated, these are used 
 
 You can find those files at [mycroft-core/mycroft/res/text](https://github.com/MycroftAI/mycroft-core/tree/dev/mycroft/res/text)
 
-- copy the ```en-u```s folder to ```ca-es```
+- copy the ```en-us``` folder to ```ca-es```
 - translate any files not yet translated
 
 NOTE: mycroft-core resource files have already been translated to catalan, but over time more files might be added
@@ -62,34 +63,48 @@ Translating skills is not always straighforward, there are many edge cases
 SPECIAL NOTES:
 - any skill with a single file not translated will not load, all files must be translated
 - the language code must match exactly the global config! I submitted a [PR to improve this](https://github.com/MycroftAI/mycroft-core/pull/1335) back in 2017, but it was completely ignored, i closed it (unmerged) after 3 years
-- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work out of the box. 
-
+ 
 ## translate.mycroft.ai
 
 The best way to translate skills is by using the mycroft translate platform, go to [translate.mycroft.ai](https://translate.mycroft.ai/) and help translating the skill in the marketplace
 
 You will then have to wait for Mycroft (the company) to send the translations to the skills repositories
 
-In the case of catalan there is a problem, because the translate platform is using the lang code  ```ca``` instead of  ```ca-es```, read section bellow for workarounnds
 
 ## Exporting Pootle Manually
 
-As pointed above, skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work because they use ```ca``` locale. But, you can use a custom script to export strings from Pootle and put them with ```ca-es``` locale.
+Skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) need to be manually synced by the mycroft team. But you can use a custom script to export strings from Pootle if you don't want to wait!
 
-Just:
-- clone [mycroft-update-translations](https://github.com/jmontane/mycroft-update-translations) repository in a working dir
+clone [mycroft-update-translations](https://github.com/jmontane/mycroft-update-translations) repository and run it
+
 ```
 git clone https://github.com/jmontane/mycroft-update-translations
-```
-- if needed, edit mycroft-update-translations.py and change settings. By default it translates skills in ```/opt/mycroft/skills/```
-
-and then run the install command
-```
 cd mycroft-update-translations
 ./mycroft-update-translations
 ```
 
+NOTE: currently the script does not accept command line arguments so you need to edit the .py file. It is pre-configured for catalan, if needed, edit mycroft-update-translations.py and change settings. By default it translates skills in ```/opt/mycroft/skills/```, if you want to translate a different language or have changed the ```data_dir``` setting in the .conf you need to edit this file
+
+
 ## Manual translation
+
+If your skill is not in the marketplace you need to translate it manually, since it wont be in the translate platform
+
+### Bootstrapping
+
+It is much easier to start translations if you actually have files to translate, instead of creating them manually one by one
+
+You can use a script by [@jmontane](https://github.com/jmontane) to copy the language resources from a different language, usually from ```en-us``` (the default language for most skills) and translate the copied files, other times it will make more sense to copy a different language, eg, ```pt-br``` to ```pt-pt``` or ```es-es``` to ```ca-es```
+
+clone [mycroft-copy-translations](https://github.com/jmontane/mycroft-copy-translations) repository and run it
+
+```
+git clone https://github.com/jmontane/mycroft-copy-translations
+cd mycroft-copy-translations
+./mycroft-copy-translations
+```
+
+NOTE: currently the script does not accept command line arguments so you need to edit the .py file. It is pre-configured for catalan, if needed, edit mycroft-update-translations.py and change settings. By default it translates skills in ```/opt/mycroft/skills/```, if you want to translate a different language or have changed the ```data_dir``` setting in the .conf you need to edit this file
 
 ### locale
 
@@ -129,6 +144,7 @@ wiki.set_lang(data["code"])
 ``` 
 
 if you translated the file above as ```code,ca-es``` the skill will not work, as a translator you have no way to know this without checking the code, so i recommend leaving a comment with link to relevant documentation, as you can see in examples above lines starting with # are ignored
+
 
 ### Pull Request
 
@@ -201,55 +217,6 @@ class MySkill(MycroftSkill):
 ```
 
 NOTE: add ```google_trans_new``` to requirements.txt of your skill
-
-
-## Replacing skills
-
-
-### Jokes
-
-the official jokes skill does not have jokes in catalan, you can trigger it (resource files have been translated) but it will not work correcly, it should be blacklisted to avoid conflicts
-
-You can use my alternative skill, [skill-icanhazdadjoke](https://github.com/JarbasSkills/skill-icanhazdadjoke), using the [icanhazdadjoke.com/](https://icanhazdadjoke.com/) API, it will blacklist the default skill automatically and supports all languages (via google translate)
-
-```
-msm install https://github.com/JarbasSkills/skill-icanhazdadjoke
-```
-
-### News skill
-
-To support catalan we need to find a news provider for Catalonia
-
-[this Pull Request](https://github.com/MycroftAI/skill-npr-news/pull/102) adds [CCMA Catalunya Informació](https://www.ccma.cat/catradio/directe/catalunya-informacio/), but it has been blocked due to a mycroft backend bug
-
-You can install [skill-news](https://github.com/JarbasLingua/skill-news), it will blacklist the default skill automatically and already supports catalan
-
-NOTE: this is temporary, once mycroft supports this i will deprecate this skill, but i intend to do this gracefully and whitelist the original again automatically, no action needed from your part
-
-```
-msm install https://github.com/JarbasLingua/skill-news
-```
-
-#### Configuring audio backend
-
-By default mycroft uses a simple audio backend that has issues with http streams, we need to make mycroft use vlc instead, this will also allow many other skills to also work
-
-```bash
-sudo apt-get install vlc
-```
-
-edit your .conf and add the following
-
-```json
-  "Audio": {
-    "backends": {
-      "vlc": {
-        "active": true
-      }
-    },
-    "default-backend": "vlc"
-  }
-```
 
 
 ### blacklist official skills
@@ -487,62 +454,7 @@ sudo apt-get -y install festival festvox-ca-ona-hts lame
 }
 ```
 
-## Wake Words
-
-A mycroft wake word is what you need to say to make mycroft start listening
-
-Mycrofts uses [precise](https://github.com/MycroftAI/mycroft-precise) for this, it is a model trained on sounds therefore it does not need "translation", if you want to change the name of mycroft then you need to get 50+ recordings and [train a model](https://mycroft-ai.gitbook.io/docs/using-mycroft-ai/customizations/wake-word#training-a-wake-word-model)
-
-Some users struggle with training so i recommend you check [Precise Community Repo](https://github.com/MycroftAI/precise-community-data), if you upload your recordings the community will train a model for you! This also means the model will keep improving over time
-
-There are two wake words we need to configure, the "name" of mycroft, and the stand up word "wake up"  (more info on this bellow)
-
-### Precise 0.3
-
-Mycroft downloads the [precise binary](https://github.com/MycroftAI/precise-data/tree/dist) at runtime, there is version 0.2 and 0.3, by default it uses 0.2 but some models are trained on 0.3 (github version)
-
-```json
- "precise": {
-   "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest-dev"
- }
-```
-
-### Precise 0.2
-
-If you want to revert to version 0.2
-
-```json
- "precise": {
-   "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest"
- }
-```
-
-### Wake word - Ey Ordenador
-
-For this example we will use a community model, [Ey Ordenador](https://github.com/MycroftAI/Precise-Community-Data/tree/master/heycomputer/es)
-
-Download the model from [here](https://github.com/MycroftAI/Precise-Community-Data/blob/master/heycomputer/models/heycomputer-es-0.3.0-20190815-eltocino.tar.gz) amd extract the files to ```~/.mycroft/precise/models``` (or any other location of your choice)
-
-You can change 2 parameters to improve detection with your voice
--  ```sensitivity``` Higher = more sensitive
--  ```trigger_level``` Higher = more delay & less sensitive
-
-
-```json
-  "listener": {
-      "wake_word": "ey_ordenador"
-  },
-  "hotwords": {
-    "ey_ordenador": {
-        "module": "precise",
-        "local_model_file": "~/.mycroft/precise/models/hey-computer-es.pb",
-        "sensitivity": 0.5, 
-        "trigger_level": 3  
-        }
-  }
-```
-
-### Standup word - Desperta
+## Standup word - Desperta
 
 If you use the [naptime skill](https://github.com/MycroftAI/skill-naptime) you can tell mycroft to "go to sleep", when you do this STT will NOT be processed, this is a privacy feature
 
@@ -604,10 +516,10 @@ If you have not trained a model do not worry, [@jmontane](https://github.com/jmo
 ```
 
 
-Now you can wake up mycroft in catalan! "ey ordenador, desperta"
+Now you can wake up mycroft in catalan! "hey mycroft, desperta"
 
 
-# Final config
+## Final config
 
 This was a long tutorial, but if you following everything your .conf should look like this
 
@@ -636,29 +548,123 @@ This was a long tutorial, but if you following everything your .conf should look
     ]
   },
   "listener": {
-      "wake_word": "ey_ordenador",   
       "stand_up_word": "desperta"
   },
-  "precise": {
+  "hotwords": {
+     "desperta": {
+        "module": "snowboy_ww_plug",
+        "models": [
+            {"sensitivity": 0.5, "model_path": "desperta_jm.pmdl"},
+           {"sensitivity": 0.5, "model_path": "desperta_jm2.pmdl"}
+         ]
+      }
+   }
+}
+```
+
+
+# Additional tweaks
+
+
+## Wake Words
+
+A mycroft wake word is what you need to say to make mycroft start listening
+
+Mycrofts uses [precise](https://github.com/MycroftAI/mycroft-precise) for this, it is a model trained on sounds therefore it does not need "translation", if you want to change the name of mycroft then you need to get 50+ recordings and [train a model](https://mycroft-ai.gitbook.io/docs/using-mycroft-ai/customizations/wake-word#training-a-wake-word-model)
+
+Some users struggle with training so i recommend you check [Precise Community Repo](https://github.com/MycroftAI/precise-community-data), if you upload your recordings the community will train a model for you! This also means the model will keep improving over time
+
+Keep in the mind the quality of the wake word will depend a lot on the ammout of data used for training
+
+- 20-200 samples - this will work well for personal models, the voices in the training data will be recognized well
+- 200-2000 samples - this should work quite well for most voices and different microphones!
+- 2000+ samples - the model can't get much better than this, from this point on you want to balance the dataset, try to include the same number of female / male / children voices. Different accents are also worth exploring
+
+### Precise 0.3
+
+Mycroft downloads the [precise binary](https://github.com/MycroftAI/precise-data/tree/dist) at runtime, there is version 0.2 and 0.3, by default it uses 0.2 but some models are trained on 0.3 (github version)
+
+```json
+ "precise": {
    "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest-dev"
+ }
+```
+
+### Precise 0.2
+
+If you want to revert to version 0.2
+
+```json
+ "precise": {
+   "dist_url": "https://github.com/MycroftAI/precise-data/raw/dist/{arch}/latest"
+ }
+```
+
+### Wake word - Ey Ordenador
+
+For this example we will use a community model, [Ey Ordenador](https://github.com/MycroftAI/Precise-Community-Data/tree/master/heycomputer/es)
+
+Download the model from [here](https://github.com/MycroftAI/Precise-Community-Data/blob/master/heycomputer/models/heycomputer-es-0.3.0-20190815-eltocino.tar.gz) amd extract the files to ```~/.mycroft/precise/models``` (or any other location of your choice)
+
+You can change 2 parameters to improve detection with your voice
+-  ```sensitivity``` Higher = more sensitive
+-  ```trigger_level``` Higher = more delay & less sensitive
+
+
+```json
+  "listener": {
+      "wake_word": "ey_ordenador"
   },
   "hotwords": {
     "ey_ordenador": {
         "module": "precise",
         "local_model_file": "~/.mycroft/precise/models/hey-computer-es.pb",
-        "sensitivity": 0.5,  
-        "trigger_level": 3 
-        },
-     "desperta": {
-        "module": "snowboy_ww_plug",
-        "models": [
-            {"sensitivity": 0.5, "model_path": "desperta_jmontane.pmdl"},
-            {"sensitivity": 0.5, "model_path": "desperta_XXX.pmdl"},
-            {"sensitivity": 0.5, "model_path": "desperta_YYY.pmdl"}
-         ]
-      }
-   },
-   "Audio": {
+        "sensitivity": 0.5, 
+        "trigger_level": 3  
+        }
+  }
+```
+
+
+## Replacing skills
+
+
+### Jokes
+
+the official jokes skill does not have jokes in catalan, you can trigger it (resource files have been translated) but it will not work correcly, it should be blacklisted to avoid conflicts
+
+You can use my alternative skill, [skill-icanhazdadjoke](https://github.com/JarbasSkills/skill-icanhazdadjoke), using the [icanhazdadjoke.com/](https://icanhazdadjoke.com/) API, it will blacklist the default skill automatically and supports all languages (via google translate)
+
+```
+msm install https://github.com/JarbasSkills/skill-icanhazdadjoke
+```
+
+### News skill
+
+To support catalan we need to find a news provider for Catalonia
+
+[this Pull Request](https://github.com/MycroftAI/skill-npr-news/pull/102) adds [CCMA Catalunya Informació](https://www.ccma.cat/catradio/directe/catalunya-informacio/), but it has been blocked due to a mycroft backend bug
+
+You can install [skill-news](https://github.com/JarbasLingua/skill-news), it will blacklist the default skill automatically and already supports catalan
+
+NOTE: this is temporary, once mycroft supports this i will deprecate this skill, but i intend to do this gracefully and whitelist the original again automatically, no action needed from your part
+
+```
+msm install https://github.com/JarbasLingua/skill-news
+```
+
+#### Configuring audio backend
+
+By default mycroft uses a simple audio backend that has issues with http streams, we need to make mycroft use vlc instead, this will also allow many other skills to also work
+
+```bash
+sudo apt-get install vlc
+```
+
+edit your .conf and add the following
+
+```json
+  "Audio": {
     "backends": {
       "vlc": {
         "active": true
@@ -666,9 +672,4 @@ This was a long tutorial, but if you following everything your .conf should look
     },
     "default-backend": "vlc"
   }
-}
 ```
-
-
-
-
