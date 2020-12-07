@@ -7,6 +7,7 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
   * [translate.mycroft.ai](#translatemycroftai)
   * [Exporting Pootle Manually](#exporting-pootle-manually)
   * [Manual translation](#manual-translation)
+    + [bootstrapping](#bootstrapping)
     + [locale](#locale)
     + [Resource files](#resource-files)
     + [Pull Request](#pull-request)
@@ -48,7 +49,7 @@ There are some files in mycroft-core that need to be translated, these are used 
 
 You can find those files at [mycroft-core/mycroft/res/text](https://github.com/MycroftAI/mycroft-core/tree/dev/mycroft/res/text)
 
-- copy the ```en-u```s folder to ```ca-es```
+- copy the ```en-us``` folder to ```ca-es```
 - translate any files not yet translated
 
 NOTE: mycroft-core resource files have already been translated to catalan, but over time more files might be added
@@ -62,34 +63,48 @@ Translating skills is not always straighforward, there are many edge cases
 SPECIAL NOTES:
 - any skill with a single file not translated will not load, all files must be translated
 - the language code must match exactly the global config! I submitted a [PR to improve this](https://github.com/MycroftAI/mycroft-core/pull/1335) back in 2017, but it was completely ignored, i closed it (unmerged) after 3 years
-- mycroft translate uses lang code ```ca``` not ```ca-es```, which means skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work out of the box. 
-
+ 
 ## translate.mycroft.ai
 
 The best way to translate skills is by using the mycroft translate platform, go to [translate.mycroft.ai](https://translate.mycroft.ai/) and help translating the skill in the marketplace
 
 You will then have to wait for Mycroft (the company) to send the translations to the skills repositories
 
-In the case of catalan there is a problem, because the translate platform is using the lang code  ```ca``` instead of  ```ca-es```, read section bellow for workarounnds
 
 ## Exporting Pootle Manually
 
-As pointed above, skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) will not work because they use ```ca``` locale. But, you can use a custom script to export strings from Pootle and put them with ```ca-es``` locale.
+Skills translated in [translate.mycroft.ai](https://translate.mycroft.ai/) need to be manually synced by the mycroft team. But you can use a custom script to export strings from Pootle if you don't want to wait!
 
-Just:
-- clone [mycroft-update-translations](https://github.com/jmontane/mycroft-update-translations) repository in a working dir
+clone [mycroft-update-translations](https://github.com/jmontane/mycroft-update-translations) repository and run it
+
 ```
 git clone https://github.com/jmontane/mycroft-update-translations
-```
-- if needed, edit mycroft-update-translations.py and change settings. By default it translates skills in ```/opt/mycroft/skills/```
-
-and then run the install command
-```
 cd mycroft-update-translations
 ./mycroft-update-translations
 ```
 
+NOTE: currently the script does not accept command line arguments so you need to edit the .py file. It is pre-configured for catalan, if needed, edit mycroft-update-translations.py and change settings. By default it translates skills in ```/opt/mycroft/skills/```, if you want to translate a different language or have changed the ```data_dir``` setting in the .conf you need to edit this file
+
+
 ## Manual translation
+
+If your skill is not in the marketplace you need to translate it manually, since it wont be in the translate platform
+
+### Bootstrapping
+
+It is much easier to start translations if you actually have files to translate, instead of creating them manually one by one
+
+You can use a script by [@jmontane](https://github.com/jmontane) to copy the language resources from a different language, usually from ```en-us``` (the default language for most skills) and translate the copied files, other times it will make more sense to copy a different language, eg, ```pt-br``` to ```pt-pt``` or ```es-es``` to ```ca-es```
+
+clone [mycroft-copy-translations](https://github.com/jmontane/mycroft-copy-translations) repository and run it
+
+```
+git clone https://github.com/jmontane/mycroft-copy-translations
+cd mycroft-copy-translations
+./mycroft-copy-translations
+```
+
+NOTE: currently the script does not accept command line arguments so you need to edit the .py file. It is pre-configured for catalan, if needed, edit mycroft-update-translations.py and change settings. By default it translates skills in ```/opt/mycroft/skills/```, if you want to translate a different language or have changed the ```data_dir``` setting in the .conf you need to edit this file
 
 ### locale
 
@@ -129,6 +144,7 @@ wiki.set_lang(data["code"])
 ``` 
 
 if you translated the file above as ```code,ca-es``` the skill will not work, as a translator you have no way to know this without checking the code, so i recommend leaving a comment with link to relevant documentation, as you can see in examples above lines starting with # are ignored
+
 
 ### Pull Request
 
