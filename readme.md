@@ -232,11 +232,17 @@ To blacklist the official skills incompatible with catalan edit your .conf and a
     "blacklisted_skills": [
           "mycroft-npr-news.mycroftai", 
           "mycroft-fallback-duck-duck-go.mycroftai", 
-          "mycroft-joke.mycroftai"
+          "mycroft-joke.mycroftai",
+          "fallback-wolfram-alpha.mycroftai"
     ]
   }
 ```
 
+Why have these been blacklisted:
+- npr-new - does not include catalan news, a alternative skill for this causes incompatibilities
+- duck duck go - no auto translate support, english input/output only
+- joke - no catalan jokes, will trigger but throw error during runtime
+- wolfram alpha - includes auto translation, but there is some bug and throws error at runtime
 
 
 If you are writing a skill that explicitly replaces an official skill you can do the following in python
