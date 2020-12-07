@@ -31,7 +31,7 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
     + [TTS Config](#tts-config)
       - [Installing festival](#installing-festival)
   * [Standup word - Desperta](#standup-word---desperta)
-- [Final config](#final-config)
+  * [Final config](#final-config)
 - [Additional tweaks](#additional-tweaks)
   * [Wake Words](#wake-words)
     + [Precise 0.3](#precise-03)
@@ -503,7 +503,7 @@ If you have not trained a model do not worry, [@jmontane](https://github.com/jmo
 Now you can wake up mycroft in catalan! "hey mycroft, desperta"
 
 
-# Final config
+## Final config
 
 This was a long tutorial, but if you following everything your .conf should look like this
 
