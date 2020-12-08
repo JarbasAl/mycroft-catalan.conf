@@ -7,7 +7,7 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
   * [translate.mycroft.ai](#translatemycroftai)
   * [Exporting Pootle Manually](#exporting-pootle-manually)
   * [Manual translation](#manual-translation)
-    + [bootstrapping](#bootstrapping)
+    + [Bootstrapping](#bootstrapping)
     + [locale](#locale)
     + [Resource files](#resource-files)
     + [Pull Request](#pull-request)
@@ -39,9 +39,11 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
     + [Precise 0.2](#precise-02)
     + [Wake word - Ey Ordenador](#wake-word---ey-ordenador)
   * [Replacing skills](#replacing-skills)
+    + [Wolfram alpha](#wolfram-alpha)
     + [Jokes](#jokes)
     + [News skill](#news-skill)
       - [Configuring audio backend](#configuring-audio-backend)
+
 
 # Translating Core
 
@@ -634,12 +636,21 @@ You can change 2 parameters to improve detection with your voice
 
 ## Replacing skills
 
+### Wolfram alpha
+
+the official wolfram alpha skill has a lot of bugs and will answer all your queries with an error message if not set to english
+
+You can use my alternative skill, [skill-wolfie](https://github.com/JarbasSkills/skill-wolfie),, it will blacklist the default skill automatically and supports all languages (via google translate)
+
+```
+msm install https://github.com/JarbasSkills/skill-wolfie
+```
 
 ### Jokes
 
 the official jokes skill does not have jokes in catalan, you can trigger it (resource files have been translated) but it will not work correcly, it should be blacklisted to avoid conflicts
 
-You can use my alternative skill, [skill-icanhazdadjoke](https://github.com/JarbasSkills/skill-icanhazdadjoke), using the [icanhazdadjoke.com/](https://icanhazdadjoke.com/) API, it will blacklist the default skill automatically and supports all languages (via google translate)
+You can use my alternative skill, [skill-icanhazdadjoke](https://github.com/JarbasSkills/skill-icanhazdadjoke), using the [icanhazdadjoke.com](https://icanhazdadjoke.com/) API, it will blacklist the default skill automatically and supports all languages (via google translate)
 
 ```
 msm install https://github.com/JarbasSkills/skill-icanhazdadjoke
