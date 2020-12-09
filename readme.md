@@ -382,7 +382,7 @@ Mycroft-core is packaged with a older version of lingua_franca, the migration to
 NOTE:
 - check [Pull Request#2772](https://github.com/MycroftAI/mycroft-core/pull/2772), if it is merged you DO NOT need to make changes described bellow
 
-Run the steps bellow and mycroft will be updated to use lingua_franca 0.3.0
+Run the steps bellow and mycroft will be updated to use lingua_franca 0.3.X
 ```bash
 cd mycroft-core
 ./stop-mycroft.sh
