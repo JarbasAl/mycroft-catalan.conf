@@ -375,6 +375,8 @@ To translate lingua_franca to a new language the methods above need to be transl
 
 [@Jmontane]() from [Softcatala]() has already done this, but over time new functionality might be added and require translation, so i will leave here a brief overview, if you are just a end user you can skip this section
 
+TODO
+
 ## Updating lingua_franca 
 
 @jmontane translated lingua_franca to catalan, this has not yet been released so you need to manually add these changes
