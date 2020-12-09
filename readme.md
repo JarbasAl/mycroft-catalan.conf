@@ -18,6 +18,8 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
   * [Mycroft-pip](#mycroft-pip)
   * [From source](#from-source)
 - [Lingua franca](#lingua-franca)
+  * [Updating lingua_franca to catalan](#updating-lingua-franca-to-catalan)
+  * [Enabling lingua_franca 0.3.X](#enabling-lingua-franca-03x)
 - [mycroft.conf](#mycroftconf)
   * [Lang](#lang)
     + [Lang Config](#lang-config)
@@ -339,7 +341,56 @@ TODO
 
 - how to translate
 - usage
-- update core to use your fork
+
+## Updating lingua_franca to catalan
+
+@jmontane translated lingua_franca to catalan, this has not yet been released so you need to manually add these changes
+
+NOTE:
+- check [Pull Request#161](https://github.com/MycroftAI/lingua-franca/pull/161), is it merged?
+- check [Releases page](https://github.com/MycroftAI/lingua-franca/releases) for lingua_franca, has a new version been released that includes catalan?
+
+You only need to run one of the commands bellow, depending on the current status of the 2 items above, at the time of writing lingua_franca was on version 0.3.1
+
+Catalan is expected to be merged ain version 0.3.2 or 0.4.0
+
+if [Pull Request#161](https://github.com/MycroftAI/lingua-franca/pull/161) was *NOT MERGED*, we need to install lingua_franca from [@softcatala fork](https://github.com/Softcatala/lingua-franca)
+
+```
+mycroft-pip install git+https://github.com/Softcatala/lingua-franca
+```
+
+if *NEW VERSION NOT RELEASED* and [Pull Request#161](https://github.com/MycroftAI/lingua-franca/pull/161) is *MERGED*, then we need to install lingua_franca from source code
+
+```
+mycroft-pip install git+https://github.com/MycroftAI/lingua-franca
+```
+
+The changelog for the [releases in lingua_franca](https://github.com/MycroftAI/lingua-franca/releases) should tell you if catalan has been merged, if it was *MERGED* and a *NEW VERSION RELEASED* we need to update lingua franca inside mycroft-core
+
+```
+mycroft-pip install lingua_franca -U
+```
+
+
+## Enabling lingua_franca 0.3.X
+
+Mycroft-core is packaged with a older version of lingua_franca, the migration to 0.3.0 has been started and should make it into the next major release of mycroft
+
+0.3.X is incompatible with 0.2.X, which means we need to update mycroft-core to use the catalan translation
+
+NOTE:
+- check [Pull Request#2772](https://github.com/MycroftAI/mycroft-core/pull/2772), if it is merged you DO NOT need to make changes described bellow
+
+Run the steps bellow and mycroft will be updated to use lingua_franca 0.3.0
+```bash
+cd mycroft-core
+./stop-mycroft.sh
+git remote add chance https://github.com/ChanceNCounter/mycroft-core
+git fetch chance
+git checkout chance/lf-refactor
+./dev_setup.sh
+```
 
 # mycroft.conf
 
