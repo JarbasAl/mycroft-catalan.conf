@@ -40,10 +40,10 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
     + [Wake word - Ey Ordenador](#wake-word---ey-ordenador)
   * [Replacing skills](#replacing-skills)
     + [Wolfram alpha](#wolfram-alpha)
+    + [Duck Duck go](#duck-duck-go)
     + [Jokes](#jokes)
     + [News skill](#news-skill)
       - [Configuring audio backend](#configuring-audio-backend)
-
 
 # Translating Core
 
@@ -552,7 +552,8 @@ This was a long tutorial, but if you following everything your .conf should look
     "blacklisted_skills": [
           "mycroft-npr-news.mycroftai", 
           "mycroft-fallback-duck-duck-go.mycroftai", 
-          "mycroft-joke.mycroftai"
+          "mycroft-joke.mycroftai",
+          "fallback-wolfram-alpha.mycroftai"
     ]
   },
   "listener": {
@@ -563,7 +564,7 @@ This was a long tutorial, but if you following everything your .conf should look
         "module": "snowboy_ww_plug",
         "models": [
             {"sensitivity": 0.5, "model_path": "desperta_jm.pmdl"},
-           {"sensitivity": 0.5, "model_path": "desperta_jm2.pmdl"}
+            {"sensitivity": 0.5, "model_path": "desperta_jm2.pmdl"}
          ]
       }
    }
@@ -640,10 +641,20 @@ You can change 2 parameters to improve detection with your voice
 
 the official wolfram alpha skill has a lot of bugs and will answer all your queries with an error message if not set to english
 
-You can use my alternative skill, [skill-wolfie](https://github.com/JarbasSkills/skill-wolfie),, it will blacklist the default skill automatically and supports all languages (via google translate)
+You can use my alternative skill, [skill-wolfie](https://github.com/JarbasSkills/skill-wolfie), it will blacklist the default skill automatically and supports all languages (via google translate)
 
 ```
 msm install https://github.com/JarbasSkills/skill-wolfie
+```
+### Duck Duck go
+
+the official duck duck go skill has no support for languages other than english
+
+You can use my alternative skill, [skill-duck](
+https://github.com/JarbasSkills/skill-ddg), it will blacklist the default skill automatically and supports all languages (via google translate)
+
+```
+msm install https://github.com/JarbasSkills/skill-duck
 ```
 
 ### Jokes
