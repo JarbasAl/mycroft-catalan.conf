@@ -18,7 +18,13 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
   * [Mycroft-pip](#mycroft-pip)
   * [From source](#from-source)
 - [Lingua franca](#lingua-franca)
-  * [Updating lingua_franca to catalan](#updating-lingua-franca-to-catalan)
+  * [Parsing](#parsing)
+    + [Extracting Dates](#extracting-dates)
+    + [Extracting durations](#extracting-durations)
+    + [Extracting Numbers](#extracting-numbers)
+  * [Formatting](#formatting)
+  * [Translating](#translating)
+  * [Updating lingua_franca](#updating-lingua-franca)
   * [Enabling lingua_franca 0.3.X](#enabling-lingua-franca-03x)
 - [mycroft.conf](#mycroftconf)
   * [Lang](#lang)
@@ -46,6 +52,8 @@ Bellow is a in depth step by step guide to configure mycroft in catalan
     + [Jokes](#jokes)
     + [News skill](#news-skill)
       - [Configuring audio backend](#configuring-audio-backend)
+
+
 
 # Translating Core
 
@@ -337,24 +345,56 @@ mycroft-pip install .
 
 # Lingua franca
 
+Lingua franca is a library that allows mycroft to understand things like dates and numbers, it is used by several skills to do things like [set alarms](https://github.com/MycroftAI/skill-alarm) and [timers](https://github.com/MycroftAI/mycroft-timer)
+
+## Parsing
+
+The parsing module is responsible for turning text into a data object skills can work with
+
+### Extracting Dates
+
 TODO
 
-- how to translate
-- usage
+### Extracting durations
 
-## Updating lingua_franca to catalan
+TODO
+
+### Extracting Numbers
+
+TODO
+
+## Formatting
+
+the formatting module is used in the reverse way, it can turn a date or a number into a number that can be easily spoken by the TTS engine
+
+TODO
+
+## Translating
+
+To translate lingua_franca to a new language the methods above need to be translated, this is one of the hardest parts because it requires you to actually know how to code, it's not just a matter of translating text, you need to program the actual logic that is dependant on your language
+
+[@Jmontane]() from [Softcatala]() has already done this, but over time new functionality might be added and require translation, so i will leave here a brief overview, if you are just a end user you can skip this section
+
+## Updating lingua_franca 
 
 @jmontane translated lingua_franca to catalan, this has not yet been released so you need to manually add these changes
 
-NOTE:
+SPECIAL NOTE: Each of these steps will become unnecessary as the catalan translation is merged. Three things need to happen: first, the [Softcatala team](https://www.softcatala.org/projectes/mycroft/)'s code must be released as part of lingua franca, then the new lingua franca release must be added to mycroft itself. Once that is done, the next stable release of Mycroft will take care of all of this, and you'll only have to set your config files. Check back often, so you'll know when to switch back to the official source code.
+
+- [catalan functionality](https://github.com/MycroftAI/lingua-franca/pull/161) merged into lingua_franca
+- [mycroft-core updated](https://github.com/MycroftAI/mycroft-core/pull/2772) to use the new lingua_franca version
+- [new version](https://github.com/MycroftAI/mycroft-core/releases) of mycroft-core released
+
+Before you start you need to check these links to decide on what is the correct next step
+
 - check [Pull Request#161](https://github.com/MycroftAI/lingua-franca/pull/161), is it merged?
 - check [Releases page](https://github.com/MycroftAI/lingua-franca/releases) for lingua_franca, has a new version been released that includes catalan?
 
-You only need to run one of the commands bellow, depending on the current status of the 2 items above, at the time of writing lingua_franca was on version 0.3.1
+NOTE: You only need to run *ONE* of the commands bellow, depending on the current status of the 2 items above, at the time of writing lingua_franca was on version 0.3.1
 
-Catalan is expected to be merged ain version 0.3.2 or 0.4.0
+Catalan is expected to be merged in version 0.3.2 or 0.4.0
 
-if [Pull Request#161](https://github.com/MycroftAI/lingua-franca/pull/161) was *NOT MERGED*, we need to install lingua_franca from [@softcatala fork](https://github.com/Softcatala/lingua-franca)
+if [Pull Request#161](https://github.com/MycroftAI/lingua-franca/pull/161) was *NOT MERGED*, we need to install lingua_franca from [@Softcatala fork](https://github.com/Softcatala/lingua-franca), this is a copy of the source code where the catalan translation was done by the [Softcatala team](https://www.softcatala.org/projectes/mycroft/)
 
 ```
 mycroft-pip install git+https://github.com/Softcatala/lingua-franca
@@ -378,6 +418,9 @@ mycroft-pip install lingua_franca -U
 Mycroft-core is packaged with a older version of lingua_franca, the migration to 0.3.0 has been started and should make it into the next major release of mycroft
 
 0.3.X is incompatible with 0.2.X, which means we need to update mycroft-core to use the catalan translation
+
+The instructions bellow will change your mycroft-core code to [@chance](https://github.com/ChanceNCounter)'s personal copy of the source code,  [@chance](https://github.com/ChanceNCounter) is one of the most active developers for lingua franca
+
 
 NOTE:
 - check [Pull Request#2772](https://github.com/MycroftAI/mycroft-core/pull/2772), if it is merged you DO NOT need to make changes described bellow
